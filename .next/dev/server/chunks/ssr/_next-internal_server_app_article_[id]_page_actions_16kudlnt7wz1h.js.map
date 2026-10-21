@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 14, "column": 0}, "map": {"version":3,"sources":["file:///C:/Users/muska/OneDrive/Desktop/news-frontend-ui/.next-internal/server/app/article/[id]/page/actions.js%20(server%20actions%20loader)"],"sourcesContent":["export {$$RSC_SERVER_CACHE_0 as '809b153d6b73798631b51e232a814234f746cc6d03'} from 'ACTIONS_MODULE0'\n"],"names":[],"mappings":";AAAA"}}]
+}
