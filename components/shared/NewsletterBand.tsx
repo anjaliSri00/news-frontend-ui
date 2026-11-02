@@ -29,7 +29,7 @@ export function NewsletterBand({ className = '' }: { className?: string }) {
 
   return (
     <section className={`bg-pale-blue border-y border-slate-200 py-12 md:py-16 ${className}`}>
-      <div className="max-w-screen-2xl w-full mx-auto px-4 sm:px-18">
+      <div className="max-w-screen-3xl w-full mx-auto px-4 sm:px-18">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           <div className="lg:col-span-7">
             <span className="text-xs uppercase tracking-widest text-slate-500 font-medium block mb-2">
@@ -58,8 +58,8 @@ export function NewsletterBand({ className = '' }: { className?: string }) {
               <form onSubmit={handleSubmit} className="space-y-2">
                 <div className="flex flex-col sm:flex-row gap-2">
                   <div className="flex-grow">
-                    <label htmlFor="newsletter-email" className="sr-only">
-                      Email address
+                    <label htmlFor="newsletter-email" className="mb-2">
+                     Your Email address
                     </label>
                     <input
                       id="newsletter-email"
@@ -70,21 +70,19 @@ export function NewsletterBand({ className = '' }: { className?: string }) {
                         if (error) setError('');
                       }}
                       placeholder="you@studio.com"
-                      className="w-full px-4 py-3 bg-white border border-slate-300 text-sm text-navy placeholder-slate-400 focus:outline-hidden focus:border-navy rounded-xs transition-colors"
+                      className="w-full px-4 py-3 mt-1 bg-white border border-slate-300 text-sm text-navy placeholder-slate-400 focus:outline-hidden focus:border-navy rounded-xs transition-colors"
                       required
                     />
                   </div>
                   <button
                     type="submit"
-                    className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-navy hover:bg-slate-900 text-white text-xs uppercase tracking-wider font-medium whitespace-nowrap rounded-xs transition-colors shadow-xs"
+                    className="inline-flex items-center justify-center mt-7 gap-2 px-6 py-3.5 h-fit bg-navy hover:bg-slate-900 text-white text-xs uppercase tracking-wider font-medium whitespace-nowrap rounded-xs transition-colors shadow-xs"
                   >
                     <span>Subscribe free</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </button>
                 </div>
-
                 {error && <p className="text-xs text-rose-600 pl-1">{error}</p>}
-
                 <p className="text-[11px] text-slate-500 pt-1 leading-normal">
                   By subscribing, you agree to our Privacy Policy. Unsubscribe anytime.
                 </p>

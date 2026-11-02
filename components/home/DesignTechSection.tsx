@@ -13,7 +13,7 @@ export function DesignTechSection() {
   const agWaste = getArticleById('agricultural-waste-architectural-surface');
 
   return (
-    <section className="py-12 border-b border-slate-200">
+    <section className="py-12 bg-[#F3F8FF]">
       <div className="max-w-screen-3xl w-full mx-auto px-4 sm:px-18">
         <SectionHeader
           kicker="Intelligence, without intrusion"
@@ -21,11 +21,11 @@ export function DesignTechSection() {
           viewAllHref="/category/design-tech"
           viewAllText="View all Design Tech"
         />
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10">
+        <div className="grid grid-cols-1 lg:grid-cols-11 gap-8 lg:gap-10">
           {/* Left lead feature (span 5) */}
           {bestTech && (
-            <div className="lg:col-span-5 flex flex-col group">
-              <div className="relative aspect-[16/10] overflow-hidden bg-slate-100 mb-4 border border-slate-100">
+            <div className="lg:col-span-4 flex flex-col group">
+              <div className="relative aspect-[6/2.5] overflow-hidden bg-slate-100 mb-4 border border-slate-100">
                 {!imgErr ? (
                   <img
                     src={bestTech.imageUrl}
@@ -40,7 +40,7 @@ export function DesignTechSection() {
               <div className="text-xs uppercase tracking-wider text-slate-500 mb-1 font-medium">
                 {bestTech.subCategory || 'Smart interiors'}
               </div>
-              <h3 className="text-2xl font-serif text-navy group-hover:text-accent-blue transition-colors leading-snug mb-2">
+              <h3 className="text-2xl font-serif text-navy transition-colors leading-snug mb-2">
                 <Link href={`/article/${bestTech.id}`}>{bestTech.title}</Link>
               </h3>
               <p className="text-slate-600 text-sm leading-relaxed mb-4">
@@ -52,13 +52,13 @@ export function DesignTechSection() {
             </div>
           )}
           {/* Middle stack (span 4) */}
-          <div className="lg:col-span-4 flex flex-col justify-between divide-y divide-slate-200">
+          <div className="lg:col-span-4 flex flex-col justify-start divide-slate-200">
             {aiDesign && (
               <div className="pb-6 group">
                 <div className="text-xs uppercase tracking-wider text-slate-500 mb-1 font-medium">
                   {aiDesign.subCategory || 'AI in design'}
                 </div>
-                <h4 className="text-lg font-serif text-navy group-hover:text-accent-blue transition-colors leading-snug mb-2">
+                <h4 className="text-xl font-serif text-navy transition-colors leading-snug mb-2">
                   <Link href={`/article/${aiDesign.id}`}>{aiDesign.title}</Link>
                 </h4>
                 <p className="text-xs text-slate-600 leading-relaxed mb-3">
@@ -74,7 +74,7 @@ export function DesignTechSection() {
                 <div className="text-xs uppercase tracking-wider text-slate-500 mb-1 font-medium">
                   {agWaste.subCategory || 'Innovative materials'}
                 </div>
-                <h4 className="text-lg font-serif text-navy group-hover:text-accent-blue transition-colors leading-snug mb-2">
+                <h4 className="text-xl font-serif text-navy transition-colors leading-snug mb-2">
                   <Link href={`/article/${agWaste.id}`}>{agWaste.title}</Link>
                 </h4>
                 <p className="text-xs text-slate-600 leading-relaxed mb-3">
@@ -87,7 +87,7 @@ export function DesignTechSection() {
             )}
           </div>
           {/* Right Practical Brief checklist card (span 3) */}
-          <div className="lg:col-span-3 bg-slate-50 border border-slate-200 p-6 flex flex-col justify-between">
+          <div className="lg:col-span-2 h-auto bg-white border border-slate-200 p-6 flex flex-col justify-start">
             <div>
               <span className="text-xs uppercase tracking-widest text-slate-500 font-medium block mb-2">
                 The practical brief
@@ -120,7 +120,7 @@ export function DesignTechSection() {
             <div className="pt-6 border-t border-slate-200 mt-6">
               <Link
                 href="/category/design-tech"
-                className="inline-flex items-center gap-1.5 text-xs uppercase tracking-wider font-semibold text-navy hover:text-accent-blue transition-colors"
+                className="inline-flex items-center gap-1.5 text-xs uppercase tracking-wider font-semibold text-navy transition-colors"
               >
                 <span>Read the checklist</span>
                 <ArrowRight className="w-3 h-3" />

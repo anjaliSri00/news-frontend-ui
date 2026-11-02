@@ -27,7 +27,7 @@ export function ProductsSection() {
 
             return (
               <div key={prod.id} className="flex flex-col group">
-                <div className="relative aspect-[4/3] overflow-hidden bg-slate-100 mb-3 border border-slate-100">
+                <div className="relative aspect-4/3 overflow-hidden bg-slate-100 mb-3 border border-slate-100">
                   <img
                     src={prod.imageUrl}
                     alt={prod.title}

@@ -4,6 +4,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getCategoryBySlug, getAllCategories } from '@/lib/services';
 import { CategoryPage } from '@/components/pages/CategoryPage';
+import EventsPage from '@/components/pages/EventsPage'; // 👈 Apna EventsPage import karo
 import type { CategorySlug } from '@/lib/models';
 
 interface PageProps {
@@ -17,8 +18,16 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const category = getCategoryBySlug(slug as CategorySlug);
+  
+  // Events ke liye custom metadata
+  if (slug === 'events') {
+    return {
+      title: 'Events & Biennials · Form & Field | Lumen Journal',
+      description: 'Key gatherings across design capitals.',
+    };
+  }
 
+  const category = getCategoryBySlug(slug as CategorySlug);
   if (!category) {
     return { title: 'Category Not Found · Form & Field' };
   }
@@ -29,17 +38,21 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-// ✅ Child resolves params inside Suspense
 async function CategoryContent({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const category = getCategoryBySlug(slug as CategorySlug);
 
+  // 🔥 MAGIC: Agar slug 'events' hai to EventsPage render karo
+  if (slug === 'events') {
+    return <EventsPage />;
+  }
+
+  // Baaki categories ke liye normal flow
+  const category = getCategoryBySlug(slug as CategorySlug);
   if (!category) notFound();
 
   return <CategoryPage key={category.slug} slug={category.slug as CategorySlug} />;
 }
 
-// ✅ Route passes the promise, does NOT await it
 export default function CategoryRoute({ params }: PageProps) {
   return (
     <Suspense fallback={<CategoryShell />}>
@@ -48,7 +61,6 @@ export default function CategoryRoute({ params }: PageProps) {
   );
 }
 
-// ✅ Deterministic fallback — no Math.random / Date.now
 function CategoryShell() {
   return (
     <div className="bg-white">

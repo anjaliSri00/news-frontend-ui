@@ -32,7 +32,7 @@ export function ProjectsSection() {
           {/* Left lead project (span 6) */}
           {barcelonaProject && (
             <div className="lg:col-span-6 flex flex-col group">
-              <div className="relative aspect-[16/10] overflow-hidden bg-slate-100 mb-4 border border-slate-100">
+              <div className="relative aspect-16/10 overflow-hidden bg-slate-100 mb-4 border border-slate-100">
                 {!imgErr ? (
                   <img
                     src={barcelonaProject.imageUrl}

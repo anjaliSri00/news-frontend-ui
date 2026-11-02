@@ -1,21 +1,23 @@
 "use client";
-import React, { useState } from 'react';
-import { Link } from '../../lib/router';
-import { SectionHeader } from '../shared/SectionHeader';
-import { getArticleById } from '../../lib/services';
-import { useAppState } from '../../lib/state/AppStateProvider';
-import { Bookmark, ArrowRight } from 'lucide-react';
+import React, { useState } from "react";
+import { Link } from "../../lib/router";
+import { SectionHeader } from "../shared/SectionHeader";
+import { getArticleById } from "../../lib/services";
+import { useAppState } from "../../lib/state/AppStateProvider";
+import { Bookmark, ArrowRight } from "lucide-react";
 
 export function DecorSection() {
   const { toggleBookmark, state } = useAppState();
   const [imgErr, setImgErr] = useState(false);
 
-  const textiles = getArticleById('rooms-character-in-details');
-  const ceramics = getArticleById('expressive-power-ordinary-vessel');
-  const lighting = getArticleById('softer-light-paper-pendants');
-  const artAtHome = getArticleById('one-well-placed-work-change-room');
+  const textiles = getArticleById("rooms-character-in-details");
+  const ceramics = getArticleById("expressive-power-ordinary-vessel");
+  const lighting = getArticleById("softer-light-paper-pendants");
+  const artAtHome = getArticleById("one-well-placed-work-change-room");
 
-  const isTextilesSaved = textiles ? state.bookmarks.includes(textiles.id) : false;
+  const isTextilesSaved = textiles
+    ? state.bookmarks.includes(textiles.id)
+    : false;
 
   return (
     <section className="py-12 border-b border-slate-200">
@@ -29,8 +31,8 @@ export function DecorSection() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10">
           {/* Left large feature (span 6) */}
           {textiles && (
-            <div className="lg:col-span-6 flex flex-col group">
-              <div className="relative aspect-[16/10] overflow-hidden bg-slate-100 mb-4 border border-slate-100">
+            <div className="lg:col-span-7 flex gap-4 flex-row group">
+              <div className="relative aspect-[3/2] overflow-hidden bg-slate-100 mb-4 border border-slate-100">
                 {!imgErr ? (
                   <img
                     src={textiles.imageUrl}
@@ -41,28 +43,34 @@ export function DecorSection() {
                     loading="lazy"
                   />
                 ) : null}
-                <button
+                {/* <button
                   onClick={(e) => {
                     e.preventDefault();
                     toggleBookmark(textiles.id, textiles.title);
                   }}
                   className="absolute top-3 right-3 p-1.5 bg-white/90 text-navy shadow-xs rounded-xs"
                 >
-                  <Bookmark className={`w-3.5 h-3.5 ${isTextilesSaved ? 'fill-navy text-navy' : 'text-slate-600'}`} />
-                </button>
+                  <Bookmark
+                    className={`w-3.5 h-3.5 ${isTextilesSaved ? "fill-navy text-navy" : "text-slate-600"}`}
+                  />
+                </button> */}
               </div>
+              <div className="p-4">
               <div className="text-xs uppercase tracking-wider text-slate-500 mb-1 font-medium">
-                {textiles.subCategory || 'Textile stories'}
+                {textiles.subCategory || "Textile stories"}
               </div>
 
-              <h3 className="text-2xl font-serif text-navy group-hover:text-accent-blue transition-colors leading-snug mb-2">
+              <h3 className="text-2xl font-lora text-navy transition-colors leading-snug mb-2">
                 <Link href={`/article/${textiles.id}`}>{textiles.title}</Link>
               </h3>
               <p className="text-slate-600 text-sm leading-relaxed mb-4">
                 {textiles.deck}
               </p>
               <div className="mt-auto pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
-                <span>By {textiles.author.name} · {textiles.date} · {textiles.readTime}</span>
+                <span>
+                  By {textiles.author.name} · {textiles.date} ·{" "}
+                  {textiles.readTime}
+                </span>
                 <Link
                   href={`/article/${textiles.id}`}
                   className="font-medium text-navy hover:text-accent-blue inline-flex items-center gap-1"
@@ -72,11 +80,15 @@ export function DecorSection() {
                 </Link>
               </div>
             </div>
+            </div>
           )}
           {/* Right 3 items (span 6) */}
-          <div className="lg:col-span-6 divide-y divide-slate-200 flex flex-col justify-between">
+          <div className="lg:col-span-5 divide-y divide-slate-200 flex flex-col justify-start">
             {[ceramics, lighting, artAtHome].filter(Boolean).map((art) => (
-              <div key={art!.id} className="py-4 first:pt-0 last:pb-0 flex items-start gap-4 group">
+              <div
+                key={art!.id}
+                className="py-4 first:pt-0 last:pb-0 flex items-start gap-4 group"
+              >
                 <div className="w-24 h-20 bg-slate-100 shrink-0 overflow-hidden border border-slate-100">
                   <img
                     src={art!.imageUrl}
@@ -89,7 +101,7 @@ export function DecorSection() {
                   <div className="text-[11px] uppercase tracking-wider text-slate-500 mb-0.5 font-medium">
                     {art!.subCategory || art!.categoryName}
                   </div>
-                  <h4 className="text-base font-serif text-navy group-hover:text-accent-blue transition-colors leading-snug line-clamp-2 mb-1">
+                  <h4 className="text-base font-lora text-navy transition-colors leading-snug line-clamp-2 mb-1">
                     <Link href={`/article/${art!.id}`}>{art!.title}</Link>
                   </h4>
                   <div className="text-xs text-slate-400">

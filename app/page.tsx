@@ -36,19 +36,19 @@ export default function Home() {
       <EventsSection />
 
       {/* 6. Trends */}
-      {/* <TrendsSection /> */}
+      <TrendsSection />
 
       {/* 7. Designers */}
-      {/* <DesignersSection /> */}
+      <DesignersSection />
 
       {/* 8. Design Tech / Technology Hub */}
-      {/* <DesignTechSection /> */}
+      <DesignTechSection />
 
       {/* 9. Furniture */}
-      {/* <FurnitureSection /> */}
+      <FurnitureSection />
 
       {/* 10. Decor */}
-      {/* <DecorSection /> */}
+      <DecorSection />
 
       {/* 11. Showroom Showcase */}
       {/* <ShowroomSection /> */}
@@ -69,7 +69,7 @@ export default function Home() {
       {/* <PodcastVideoSection /> */}
 
       {/* 17. The Daily Brief Newsletter */}
-      {/* <NewsletterBand /> */}
+      <NewsletterBand />
     </div>
   );
 }

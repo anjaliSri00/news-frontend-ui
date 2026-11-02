@@ -1,3 +1,7 @@
+export type ViewType = 'signin' | 'archive' | 'register' ;
+
+export type ReadershipTier = 'digital' | 'patron';
+
 export type CategorySlug =
   | 'home-decor'
   | 'events'
@@ -17,6 +21,16 @@ export interface CategoryInfo {
   kicker: string;
 }
 
+export interface UserAccount {
+  id: string;
+  code: string;
+  firstName: string;
+  lastName: string;
+  fullName: string;
+  email: string;
+  mobile: string | null;
+  // tier?: ReadershipTier;
+}
 export interface Author {
   id: string;
   name: string;

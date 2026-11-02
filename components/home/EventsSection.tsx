@@ -1,45 +1,136 @@
 "use client";
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from '../../lib/router';
 import { SectionHeader } from '../shared/SectionHeader';
-import { getAllEvents } from '../../lib/services';
 import { useAppState } from '../../lib/state/AppStateProvider';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight, Loader2 } from 'lucide-react';
+import fetchApiResponse from '../../helper/api_data_store'; // Path check kar lena
+
+const EVENTS_API = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/events`;
+
+// Types
+interface EventWebsitePayload {
+  id: string;
+  title: string;
+  excerpt: string;
+  category: string;
+  start_date: string;
+  end_date: string;
+  venue: string;
+  city: string;
+  country: string;
+  registration_url: string;
+  article_url: string;
+  status: string;
+}
+
+interface EventsListResponse {
+  events: EventWebsitePayload[];
+}
+
+// Formatted type for UI
+interface FormattedEvent extends EventWebsitePayload {
+  day: string;
+  month: string;
+  dates: string;
+  description: string;
+  actionLink: string;
+  actionText: string;
+}
 
 export function EventsSection() {
   const { openRegisterModal } = useAppState();
-  const events = getAllEvents().filter((e) => e.isEditorSelection).slice(0, 3);
+  
+  const [events, setEvents] = useState<FormattedEvent[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+useEffect(() => {
+  async function fetchEvents() {
+    try {
+      const response = await fetchApiResponse<EventsListResponse>(
+        `${EVENTS_API}?status=published&limit=3`,
+        { method: 'GET', headers: { 'Content-Type': 'application/json' } }
+      );
+
+      if (response.meta?.status === 200 && response.data?.events) {
+        const formatted = response.data.events.map((e) => {
+          const startDate = new Date(e.start_date);
+          const endDate = new Date(e.end_date || e.start_date);
+
+          const startDay = startDate.getDate().toString().padStart(2, '0');
+          const startMonth = startDate.toLocaleString('en-US', { month: 'short' }).toUpperCase();
+          const startYear = startDate.getFullYear();
+          
+          const endDay = endDate.getDate().toString().padStart(2, '0');
+          const endMonth = endDate.toLocaleString('en-US', { month: 'short' }).toUpperCase();
+          const endYear = endDate.getFullYear();
+
+          // 🔥 Date Logic Fix
+          let datesStr = `${startDay} ${startMonth}`;
+          
+          if (e.end_date && e.start_date !== e.end_date) {
+            if (startYear !== endYear) {
+              // Alag saal (e.g., 29 Dec 2026 - 05 Jan 2027)
+              datesStr = `${startDay} ${startMonth} ${startYear} – ${endDay} ${endMonth} ${endYear}`;
+            } else if (startMonth !== endMonth) {
+              // Alag mahina (e.g., 29 OCT – 28 NOV)
+              datesStr = `${startDay} ${startMonth} – ${endDay} ${endMonth}`;
+            } else {
+              // Same mahina (e.g., 29 OCT – 05 NOV)
+              datesStr = `${startDay} – ${endDay} ${startMonth}`;
+            }
+          }
+
+          // Link prioritization: Article > Registration > Internal route
+          const link = e.article_url || e.registration_url || '/events';
+          const actionText = e.article_url ? 'Read Article' : e.registration_url ? 'Request Pass' : 'View Event';
+
+          return {
+            ...e,
+            day: startDay,
+            month: startMonth, // Calendar block me hamesha start month hi dikhega
+            dates: datesStr,   // List me ye naya range dikhega
+            description: e.excerpt || e.venue,
+            actionLink: link,
+            actionText: actionText
+          };
+        });
+        
+        setEvents(formatted);
+      }
+    } catch (err) {
+      console.error('Failed to fetch events for section:', err);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  fetchEvents();
+}, []);
+
+  if (isLoading) {
+    return (
+      <section className="py-12 border-b border-slate-200 flex justify-center items-center min-h-75">
+         <Loader2 className="w-8 h-8 animate-spin text-navy" />
+      </section>
+    );
+  }
+
+  // Agar koi event nahi hai to section hide kar do
+  if (events.length === 0) return null;
 
   return (
-    <section className="py-12 border-b border-slate-200">
+    <section className="py-12 bg-pale-blue">
       <div className="max-w-screen-3xl w-full mx-auto px-4 sm:px-18">
         <SectionHeader
           kicker="Category 02"
           title="Events & Biennials"
-          viewAllHref="/events"
+          viewAllHref="/category/events"
           viewAllText="View all Events"
         />
-        <div className="grid grid-cols-1  gap-8 lg:gap-10 items-stretch">
-          {/* Left editor's selection callout box (span 4) */}
-          <div className="lg:col-span-4 hidden bg-slate-50 border border-slate-200 p-6 sm:p-8 flex flex-col justify-between">
-            <div>
-              <span className="text-xs uppercase tracking-widest text-slate-500 font-medium block mb-2">
-                Our calendar / Editor&apos;s selection
-              </span>
-              <h3 className="text-2xl sm:text-3xl font-serif text-navy leading-tight mb-4">
-                Where design&apos;s next conversations begin
-              </h3>
-              <p className="text-slate-600 text-xs sm:text-sm leading-relaxed mb-6">
-                From material research symposia in Rotterdam to collectible design launches in Lisbon, our editors select the key gatherings shaping international spatial practice.
-              </p>
-            </div>
+        <div className=" gap-8 lg:gap-10 items-stretch">
 
-            <div className="pt-4 border-t border-slate-200 flex items-center justify-between text-[11px] text-slate-400">
-              <span>Updated 14 Oct 2026</span>
-              <span>Dates subject to change</span>
-            </div>
-          </div>
           {/* Right 3 events list with date blocks (span 8) */}
           <div className="divide-y divide-slate-200 flex flex-col justify-between">
             {events.map((event) => (
@@ -58,50 +149,33 @@ export function EventsSection() {
                       {event.day}
                     </span>
                   </div>
-
                   <div>
                     <p className="text-xs text-slate-500 mt-1">
                       {event.city}, {event.country} · {event.dates}
                     </p>
                     <h4 className="text-2xl font-lora text-navy transition-colors leading-snug">
-                      <Link href={`/events`}>{event.title}</Link>
+                      <Link href="/category/events">{event.title}</Link>
                     </h4>
-                    <p className="text-xs text-slate-400 mt-0.5">
+                    <p className="text-xs text-slate-400 mt-0.5 line-clamp-1">
                       {event.description}
                     </p>
                   </div>
                 </div>
 
-                {/* Action button */}
-                {/* <div className="sm:text-right shrink-0">
-                  <button
-                    onClick={() => openRegisterModal(event)}
-                    className="inline-flex items-center gap-1 text-xs font-medium bg-navy rounded-sm px-3 py-2  text-white transition-colors cursor-pointer"
-                  >
-                    <span>{event.status}</span>
-                  </button>
-                </div> */}
+                {/* Action button / Link */}
                 <div className="sm:text-right shrink-0">
-  {event.link ? (
-    <a
-      href={event.link}
-      target={event.link.startsWith("http") ? "_blank" : "_self"}
-      rel="noopener noreferrer"
-      className="inline-flex items-center gap-1 text-xs font-medium text-navy hover:text-accent-blue transition-colors cursor-pointer"
-    >
-      <span>{event.status}</span>
-      <ArrowUpRight className="w-3.5 h-3.5" />
-    </a>
-  ) : (
-    <button
-      onClick={() => openRegisterModal(event)}
-      className="inline-flex items-center gap-1 text-xs font-medium text-navy hover:text-accent-blue transition-colors cursor-pointer"
-    >
-      <span>{event.status}</span>
-      <ArrowUpRight className="w-3.5 h-3.5" />
-    </button>
-  )}
-</div>
+                  {event.actionLink && (
+                    <a
+                      href={event.actionLink}
+                      target={event.actionLink.startsWith("http") ? "_blank" : "_self"}
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-xs rounded-sm py-2 px-4 font-medium bg-navy text-white transition-colors cursor-pointer uppercase tracking-wider"
+                    >
+                      <span>{event.actionText}</span>
+                      <ArrowUpRight className="w-3.5 h-3.5" />
+                    </a>
+                  )}
+                </div>
               </div>
             ))}
           </div>
@@ -110,8 +184,6 @@ export function EventsSection() {
     </section>
   );
 }
-
-
 // "use client";
 
 // import React, { useEffect, useState } from "react";

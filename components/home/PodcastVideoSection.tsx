@@ -28,7 +28,7 @@ export function PodcastVideoSection() {
               onClick={() => openVideoModal(item)}
               className="flex flex-col group cursor-pointer"
             >
-              <div className="relative aspect-[16/10] overflow-hidden bg-slate-100 mb-3 border border-slate-100">
+              <div className="relative aspect-16/10 overflow-hidden bg-slate-100 mb-3 border border-slate-100">
                 <img
                   src={item.thumbnailUrl}
                   alt={item.title}

@@ -4,6 +4,7 @@ import { Inter, Lora, Playfair_Display } from 'next/font/google';
 import './globals.css';
 import { cacheLife } from 'next/cache';
 import { AppStateProvider } from '@/lib/state/AppStateProvider';
+import { AuthProvider } from './providers'; // ← NEW
 import { TopUtilityBar } from '@/components/layout/TopUtilityBar';
 import { Header } from '@/components/layout/Header';
 import { Nav } from '@/components/layout/Nav';
@@ -21,7 +22,6 @@ const lora = Lora({
   subsets: ['latin'],
   variable: '--font-lora',
   display: 'swap',
-  // Optional: pick weights/styles you actually use
   weight: ['400', '500', '600', '700'],
   style: ['normal', 'italic'],
 });
@@ -38,10 +38,9 @@ export const metadata: Metadata = {
   },
 };
 
-/** Cached once per day; used by both the utility bar and the footer. */
 async function getMastheadDate() {
   'use cache';
-  cacheLife('days'); // Next.js built-in profile — revalidates daily
+  cacheLife('days');
 
   const now = new Date();
   const year = now.getUTCFullYear();
@@ -67,22 +66,27 @@ export default async function RootLayout({
 
   return (
     <html lang="en" className={`${inter.variable} ${playfair.variable} ${lora.variable}`}>
-      <body className="min-h-screen overflow-x-hidden w-full max-w-full flex flex-col bg-white text-slate-700 antialiased selection:bg-blue-100 selection:text-blue-900" suppressHydrationWarning>
-        <AppStateProvider>
-          <TopUtilityBar dateLabel={dateLabel} />
-          <Header />
-          <Nav />
-          <Ticker />
-          <main className="grow w-full min-w-0">{children}</main>
-          <Footer year={year} />
+      <body
+        className="min-h-screen overflow-x-hidden w-full max-w-full flex flex-col bg-white text-slate-700 antialiased selection:bg-blue-100 selection:text-blue-900"
+        suppressHydrationWarning
+      >
+        <AuthProvider>          {/* ← NEW: wraps everything */}
+          <AppStateProvider>
+            <TopUtilityBar dateLabel={dateLabel} />
+            <Header />
+            <Nav />
+            <Ticker />
+            <main className="grow w-full min-w-0">{children}</main>
+            <Footer year={year} />
 
-          <SearchOverlay />
-          <LightboxModal />
-          <VideoPlayerModal />
-          <RegisterEventModal />
-          <ToastContainer />
-          <BackToTop />
-        </AppStateProvider>
+            <SearchOverlay />
+            <LightboxModal />
+            <VideoPlayerModal />
+            <RegisterEventModal />
+            <ToastContainer />
+            <BackToTop />
+          </AppStateProvider>
+        </AuthProvider>
       </body>
     </html>
   );
