@@ -1,12 +1,49 @@
 "use client";
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from '../../lib/router';
 import { SectionHeader } from '../shared/SectionHeader';
-import { getTrendingArticles } from '../../lib/services';
+import fetchApiResponse from '../../helper/api_data_store';
+import { Loader2 } from 'lucide-react';
+
+// Types for API Response
+interface NewsItem {
+  id: string;
+  slug:string;
+  title: string;
+  excerpt: string;
+  read_time: number;
+  category: string[];
+  news_type: string;
+  featured_image_url: string;
+  published_at: string | null;
+  views: number;
+}
 
 export function TrendingSection() {
-  const trending = getTrendingArticles().slice(0, 4);
+  const [trending, setTrending] = useState<NewsItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchTrending() {
+      try {
+        const res = await fetchApiResponse<{ news: NewsItem[] }>(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/news?news_type=trending`
+        );
+        if (res.meta?.status === 200 && res.data?.news) {
+          setTrending(res.data.news.slice(0, 4));
+        }
+      } catch (err) {
+        console.error('Failed to load trending stories:', err);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchTrending();
+  }, []);
+
+  if (isLoading) return <div className="py-12 flex justify-center"><Loader2 className="animate-spin text-navy" /></div>;
+  if (trending.length === 0) return null;
 
   return (
     <section className="py-12 bg-pale-blue">
@@ -24,28 +61,25 @@ export function TrendingSection() {
 
             return (
               <div key={item.id} className="group relative flex flex-col pt-2">
-                {/* Numbered kicker */}
                 <div className="flex items-baseline gap-2 mb-2">
                   <span className="font-lora text-3xl font-light text-[#142B4A] transition-colors tabular-nums">
                     {num}
                   </span>
                   <span className="text-xs uppercase tracking-wider text-[#142B4A] font-inter font-bold">
-                    {item.subCategory || item.categoryName}
+                    {item.category?.[0] || 'TRENDS'}
                   </span>
                 </div>
 
-                {/* Title */}
                 <h3 className="text-xl font-lora text-navy transition-colors leading-snug mb-3">
-                  <Link href={`/article/${item.id}`}>
+                  <Link href={`/article/${item.slug}`}>
                     {item.title}
                   </Link>
                 </h3>
 
-                {/* Metadata */}
                 <div className="mt-auto text-xs text-slate-400 font-sans">
-                  <span>{item.readCount || '8.4k reads'}</span>
+                  <span>{item.views ? `${item.views} reads` : '8.4k reads'}</span>
                   <span className="mx-1.5">·</span>
-                  <span>{item.readTime}</span>
+                  <span>{item.read_time} min</span>
                 </div>
               </div>
             );

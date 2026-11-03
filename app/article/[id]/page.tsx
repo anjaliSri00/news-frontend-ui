@@ -1,92 +1,165 @@
-import React, { Suspense } from 'react';
-import type { Metadata } from 'next';
-import { notFound } from 'next/navigation';
-import { getArticleById, getAllArticles } from '@/lib/services';
-import { ArticleDetailPage } from '@/components/pages/ArticleDetailPage';
+"use client";
 
-interface PageProps {
-  params: Promise<{ id: string }>;
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
-}
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'next/navigation';
+import { NewsArticle } from '@/types/editorial';
+import fetchApiResponse from '@/helper/api_data_store';
+import { Loader2, ArrowLeft, Eye } from 'lucide-react';
+import { Link } from '@/lib/router';
 
-export async function generateStaticParams() {
-  const articles = getAllArticles();
-  return articles.map((art) => ({ id: art.id }));
-}
+export default function ArticlePage() {
+  const params = useParams();
+  
+  // Folder name [id] hai, to params.id aayega (jo actual slug hai)
+  const slug = Array.isArray(params.id) ? params.id[0] : params.id;
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { id } = await params;
-  const article = getArticleById(id);
+  const [article, setArticle] = useState<NewsArticle | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(false);
 
-  if (!article) {
-    return { title: 'Story Not Found · Form & Field' };
+  // 1. Fetch Article Data
+  useEffect(() => {
+    if (!slug) return;
+
+    async function fetchArticle() {
+      try {
+        const res = await fetchApiResponse<{ news: NewsArticle }>(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/news/slug/${slug}`
+        );
+
+        if (res.meta?.status === 200 && res.data?.news) {
+          setArticle(res.data.news);
+        } else {
+          setError(true);
+        }
+      } catch (err) {
+        console.error('Failed to fetch article:', err);
+        setError(true);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    fetchArticle();
+  }, [slug]);
+
+  // 2. Increment Views (Bonus: Jaise hi article load ho, views badhao)
+  useEffect(() => {
+    if (article?.id) {
+      // Background me API hit karo (await mat karo taaki UI block na ho)
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/news/${article.id}/views`, {
+        method: 'POST',
+      }).catch(err => console.error('Failed to increment views', err));
+    }
+  }, [article?.id]);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-white">
+        <Loader2 className="w-8 h-8 animate-spin text-navy" />
+      </div>
+    );
   }
 
-  return {
-    title: `${article.title} · Form & Field | Lumen Journal`,
-    description: article.deck,
-    openGraph: {
-      title: article.title,
-      description: article.deck,
-      images: [article.imageUrl],
-    },
-  };
-}
+  if (error || !article) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-white">
+        <h1 className="text-3xl font-serif text-navy mb-4">Article not found</h1>
+        <Link href="/" className="text-accent-blue hover:underline flex items-center gap-2">
+          <ArrowLeft className="w-4 h-4" /> Back to Home
+        </Link>
+      </div>
+    );
+  }
 
-// ✅ Child resolves params inside Suspense
-async function ArticleContent({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params;
-  const article = getArticleById(id);
+  // Format Date
+  const formattedDate = article.published_at
+    ? new Date(article.published_at).toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' })
+    : 'Recent';
 
-  if (!article) notFound();
-
-  return <ArticleDetailPage article={article} />;
-}
-
-// ✅ Route passes the promise, does NOT await it
-export default function ArticleRoute({ params }: PageProps) {
   return (
-    <Suspense fallback={<ArticleShell />}>
-      <ArticleContent params={params} />
-    </Suspense>
-  );
-}
+    <div className="bg-white min-h-screen">
+      {/* Hero Section */}
+      <section className="max-w-4xl mx-auto px-4 sm:px-6 pt-12 pb-8">
+        <Link href="/" className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-500 hover:text-navy mb-8 transition-colors">
+          <ArrowLeft className="w-4 h-4" /> Back to insights
+        </Link>
 
-// ✅ Deterministic fallback — approximates the article header layout
-function ArticleShell() {
-  return (
-    <article className="bg-white">
-      <div className="border-b border-slate-200 py-3 bg-slate-50 text-xs">
-        <div className="max-w-4xl mx-auto px-4 flex items-center justify-between">
-          <div className="h-3 w-32 bg-slate-200" />
-          <div className="h-3 w-20 bg-slate-200" />
+        {/* Category & Type */}
+        <div className="flex items-center gap-3 mb-4">
+          <span className="text-[11px] font-bold uppercase tracking-widest text-[#3B6BB0]">
+            {article.category?.[0] || 'News'}
+          </span>
+          <span className="w-1 h-1 rounded-full bg-slate-300"></span>
+          <span className="text-[11px] font-bold uppercase tracking-widest text-slate-400">
+            {article.news_type || 'Article'}
+          </span>
         </div>
-      </div>
 
-      <header className="max-w-4xl mx-auto px-4 pt-10 pb-8">
-        <div className="h-3 w-40 bg-slate-200 mb-3" />
-        <div className="h-12 w-full bg-slate-200 mb-3" />
-        <div className="h-12 w-3/4 bg-slate-200 mb-6" />
-        <div className="h-5 w-full bg-slate-200 mb-2" />
-        <div className="h-5 w-5/6 bg-slate-200 mb-6" />
-        <div className="pt-4 border-t border-slate-200 flex items-center gap-3">
-          <div className="h-3 w-24 bg-slate-200" />
-          <div className="h-3 w-20 bg-slate-200" />
-          <div className="h-3 w-16 bg-slate-200" />
+        {/* Title */}
+        <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl text-navy leading-[1.1] mb-6">
+          {article.title}
+        </h1>
+
+        {/* Excerpt */}
+        <p className="text-xl text-slate-600 leading-relaxed mb-8 max-w-3xl">
+          {article.excerpt}
+        </p>
+
+        {/* Author & Meta Info */}
+        <div className="flex items-center justify-between border-y border-slate-200 py-4">
+          <div className="flex items-center gap-4 text-sm text-slate-500">
+            <span>By Editorial Desk</span>
+            <span className="w-1 h-1 rounded-full bg-slate-300"></span>
+            <span>{formattedDate}</span>
+            <span className="w-1 h-1 rounded-full bg-slate-300"></span>
+            <span>{article.read_time} min read</span>
+          </div>
+          
+          <div className="flex items-center gap-2 text-sm text-slate-400">
+             <Eye className="w-4 h-4" />
+             <span>{article.views || 0} views</span>
+          </div>
         </div>
-      </header>
+      </section>
 
-      <div className="max-w-5xl mx-auto px-4 mb-10">
-        <div className="aspect-16/10 bg-slate-100 border border-slate-200" />
-      </div>
+      {/* Featured Image */}
+      {article.featured_image_url && (
+        <section className="max-w-6xl mx-auto px-4 sm:px-6 mb-12">
+          <div className="aspect-[16/9] w-full overflow-hidden bg-slate-100">
+            <img
+              src={article.featured_image_url}
+              alt={article.title}
+              className="w-full h-full object-cover"
+            />
+          </div>
+        </section>
+      )}
 
-      <div className="max-w-3xl mx-auto px-4 space-y-4">
-        <div className="h-4 w-full bg-slate-200" />
-        <div className="h-4 w-full bg-slate-200" />
-        <div className="h-4 w-11/12 bg-slate-200" />
-        <div className="h-4 w-full bg-slate-200" />
-        <div className="h-4 w-10/12 bg-slate-200" />
-      </div>
-    </article>
+      {/* Article Content */}
+      <section className="max-w-3xl mx-auto px-4 sm:px-6 pb-20">
+        {/* 
+          HTML content render ho raha hai. 
+          Ensure karo backend isko sanitize karta ho (XSS attacks se bachne ke liye).
+        */}
+        <div 
+          className="prose prose-lg prose-slate max-w-none 
+                     prose-headings:font-serif prose-headings:text-navy 
+                     prose-p:leading-relaxed prose-p:text-slate-700
+                     prose-a:text-accent-blue prose-a:no-underline hover:prose-a:underline
+                     prose-img:rounded-md prose-blockquote:border-l-navy prose-blockquote:bg-slate-50 prose-blockquote:py-1 prose-blockquote:px-6"
+          dangerouslySetInnerHTML={{ __html: article.content || '<p>Content coming soon...</p>' }}
+        />
+
+        {/* Source Link */}
+        {article.source_url && (
+          <div className="mt-12 pt-6 border-t border-slate-200">
+            <p className="text-sm text-slate-500">
+              Source: <a href={article.source_url} target="_blank" rel="noopener noreferrer" className="text-accent-blue hover:underline">{article.source || article.source_url}</a>
+            </p>
+          </div>
+        )}
+      </section>
+    </div>
   );
 }

@@ -1,35 +1,59 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from '../../lib/router';
 import { SectionHeader } from '../shared/SectionHeader';
-import { getArticleById } from '../../lib/services';
-import { useAppState } from '../../lib/state/AppStateProvider';
-import { Bookmark } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
+import fetchApiResponse from '../../helper/api_data_store';
+
+interface NewsItem {
+  id: string;
+  slug: string;
+  title: string;
+  excerpt: string;
+  read_time: number;
+  category: string[];
+  featured_image_url: string;
+  published_at: string | null;
+  layout_type: 'card' | 'featured' | 'compact'; // 👈 Added
+}
 
 export function LatestNewsSection() {
-  const { toggleBookmark, state } = useAppState();
-  const [imgErr, setImgErr] = useState(false);
+  const [articles, setArticles] = useState<NewsItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const tokyoArticle = getArticleById('less-floor-area-more-possibilities');
-  const portoArticle = getArticleById('porto-neighbourhood-library');
-  const kitchenArticle = getArticleById('kitchen-island-family-table');
-  const acousticArticle = getArticleById('acoustic-lighting-double-duty');
-  const collectiveArticle = getArticleById('rise-of-design-collective');
+  useEffect(() => {
+    async function fetchLatest() {
+      try {
+        const res = await fetchApiResponse<{ news: NewsItem[] }>(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/news?news_type=latest`
+        );
+        if (res.meta?.status === 200 && res.data?.news) {
+          setArticles(res.data.news);
+        }
+      } catch (err) {
+        console.error('Failed to load latest news:', err);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchLatest();
+  }, []);
 
-  const isTokyoBookmarked = tokyoArticle ? state.bookmarks.includes(tokyoArticle.id) : false;
+  if (isLoading) return <div className="py-12 flex justify-center"><Loader2 className="animate-spin text-navy" /></div>;
+  if (articles.length === 0) return null;
 
-  // Right-column cells, in display order: TL, TR, BL, BR
-  const sideArticles = [portoArticle, acousticArticle, kitchenArticle, collectiveArticle].filter(
-    Boolean
-  ) as NonNullable<ReturnType<typeof getArticleById>>[];
+  // 🔥 LAYOUT LOGIC: Featured article ko dhundo
+  const featuredArticle = articles.find(a => a.layout_type === 'featured') || articles[0];
+  
+  // Baaki articles jo featured nahi hain
+  const sideArticles = articles
+    .filter(a => a.id !== featuredArticle?.id)
+    .slice(0, 4);
 
-  // Timestamps kept as data here since the source articles only carry a date string
-  const timestamps: Record<string, string> = {
-    'porto-neighbourhood-library': '14 Oct 2026 · 08:45 GMT',
-    'acoustic-lighting-double-duty': '14 Oct 2026 · 08:10 GMT',
-    'kitchen-island-family-table': '14 Oct 2026 · 07:30 GMT',
-    'rise-of-design-collective': '13 Oct 2026 · 16:20 GMT',
+  const formatDate = (dateStr: string | null) => {
+    if (!dateStr) return 'Recent';
+    return new Date(dateStr).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
   };
 
   return (
@@ -38,62 +62,45 @@ export function LatestNewsSection() {
         <SectionHeader
           kicker="The daily dispatch"
           title="Latest News"
-          viewAllHref="/category/home-decor"
+          viewAllHref="/category/latest-news"
           viewAllText="View all news"
         />
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10">
-          {/* ── LEFT lead feature (span 5) ─────────────────────────── */}
-          {tokyoArticle && (
-            <div className="lg:col-span-4 flex flex-col group">
+          {/* LEFT lead feature */}
+          {featuredArticle && (
+            <div className="lg:col-span-5 flex flex-col group">
               <div className="relative w-full aspect-8/4 overflow-hidden bg-slate-100 mb-5">
-                {!imgErr && (
-                  <img
-                    src={tokyoArticle.imageUrl}
-                    alt={tokyoArticle.title}
-                    referrerPolicy="no-referrer"
-                    onError={() => setImgErr(true)}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
-                    loading="lazy"
-                  />
-                )}
-                <button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    toggleBookmark(tokyoArticle.id, tokyoArticle.title);
-                  }}
-                  aria-label="Bookmark article"
-                  className="absolute top-3 right-3 p-1.5 bg-white/90 text-navy shadow-xs rounded-xs"
-                >
-                  <Bookmark
-                    className={`w-3.5 h-3.5 ${
-                      isTokyoBookmarked ? 'fill-navy text-navy' : 'text-slate-600'
-                    }`}
-                  />
-                </button>
+                <img
+                  src={featuredArticle.featured_image_url}
+                  alt={featuredArticle.title}
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                  loading="lazy"
+                />
               </div>
 
               <div className="text-[11px] uppercase tracking-[0.14em] text-accent-blue mb-2 font-semibold">
-                {tokyoArticle.kicker || 'Urban Living / Tokyo'}
+                {featuredArticle.category?.[0] || 'News'}
               </div>
 
               <h3 className="text-2xl sm:text-3xl font-lora text-navy leading-snug mb-3">
-                <Link href={`/article/${tokyoArticle.id}`} className="hover:text-accent-blue transition-colors">
-                  {tokyoArticle.title}
+                {/* 👈 Fixed: slug use karo, id nahi */}
+                <Link href={`/article/${featuredArticle.slug}`} className="hover:text-accent-blue transition-colors">
+                  {featuredArticle.title}
                 </Link>
               </h3>
 
               <p className="text-slate-600 text-sm leading-relaxed">
-                {tokyoArticle.deck}
+                {featuredArticle.excerpt}
               </p>
 
               <div className="pt-3 text-xs text-slate-500">
-                By {tokyoArticle.author.name} · {tokyoArticle.date} · {tokyoArticle.readTime}
+                By Editorial Desk · {formatDate(featuredArticle.published_at)} · {featuredArticle.read_time} min read
               </div>
             </div>
           )}
 
-          {/* ── RIGHT 2×2 grid with hairline separators (span 7) ───── */}
+          {/* RIGHT 2×2 grid */}
           <div className="lg:col-span-7">
             <div className="grid grid-cols-1 sm:grid-cols-2">
               {sideArticles.map((article, idx) => {
@@ -105,49 +112,41 @@ export function LatestNewsSection() {
                     key={article.id}
                     className={[
                       'group',
-                      // Horizontal hairline between rows
                       !isLastRow ? 'border-b border-slate-200' : '',
-                      // Vertical hairline between columns (sm+ only)
                       isRightCol ? 'sm:border-l sm:border-slate-200' : '',
-                      // Padding so text doesn't touch the lines
                       'pb-6 sm:pb-7',
                       isLastRow ? 'pt-6 sm:pt-7' : '',
                       isRightCol ? 'sm:pl-6 lg:pl-7' : '',
                       !isRightCol ? 'sm:pr-6 lg:pr-7' : '',
-                    ]
-                      .filter(Boolean)
-                      .join(' ')}
+                    ].filter(Boolean).join(' ')}
                   >
-                    <Link href={`/article/${article.id}`} className="flex gap-4 items-start">
-                      {/* Text column */}
+                    <Link href={`/article/${article.slug}`} className="flex gap-4 items-start">
                       <div className="flex-1 min-w-0 flex flex-col">
                         <div className='flex'>
-                           <div className="relative w-27.5 sm:w-30 aspect-4/3 shrink-0 overflow-hidden bg-slate-100">
-                        <img
-                          src={article.imageUrl}
-                          alt={article.title}
-                          referrerPolicy="no-referrer"
-                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-                          loading="lazy"
-                        />
-                      </div>
-                        <div className='flex flex-col py-2 px-4'>
-                        <div className="text-[10px] sm:text-[11px] uppercase tracking-[0.14em] text-accent-blue font-semibold mb-1.5">
-                          {article.subCategory || article.categoryName}
+                          <div className="relative w-27.5 sm:w-30 aspect-4/3 shrink-0 overflow-hidden bg-slate-100">
+                            <img
+                              src={article.featured_image_url}
+                              alt={article.title}
+                              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                              loading="lazy"
+                            />
+                          </div>
+                          <div className='flex flex-col py-2 px-4'>
+                            <div className="text-[10px] sm:text-[11px] uppercase tracking-[0.14em] text-accent-blue font-semibold mb-1.5">
+                              {article.category?.[0] || 'News'}
+                            </div>
+                            <h4 className="text-base sm:text-lg font-lora text-navy leading-snug mb-2 transition-colors">
+                              {article.title}
+                            </h4>
+                          </div>
                         </div>
-
-                        <h4 className="text-base sm:text-lg font-lora text-navy leading-snug mb-2 transition-colors">
-                          {article.title}
-                        </h4>
-                         </div>
-                         </div>
                         <div className="mt-auto pt-2 w-full">
-                        <p className="hidden sm:block text-xs text-slate-600 leading-relaxed line-clamp-2 mb-2.5">
-                          {article.deck}
-                        </p>
-                        <div className="text-[11px] uppercase tracking-wider text-slate-400 tabular-nums">
-                          {timestamps[article.id] ?? article.date}
-                        </div>
+                          <p className="hidden sm:block text-xs text-slate-600 leading-relaxed line-clamp-2 mb-2.5">
+                            {article.excerpt}
+                          </p>
+                          <div className="text-[11px] uppercase tracking-wider text-slate-400 tabular-nums">
+                            {formatDate(article.published_at)} · {article.read_time} min
+                          </div>
                         </div>
                       </div>
                     </Link>

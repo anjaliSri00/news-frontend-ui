@@ -48,7 +48,7 @@ export default function Home() {
       <FurnitureSection />
 
       {/* 10. Decor */}
-      <DecorSection />
+      {/* <DecorSection /> */}
 
       {/* 11. Showroom Showcase */}
       {/* <ShowroomSection /> */}
@@ -63,7 +63,7 @@ export default function Home() {
       {/* <EditorialDeskSection /> */}
 
       {/* 15. Special Reports (Dark band) */}
-      {/* <SpecialReportsSection /> */}
+      <SpecialReportsSection />
 
       {/* 16. Podcast & Video */}
       {/* <PodcastVideoSection /> */}

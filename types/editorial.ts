@@ -27,3 +27,23 @@ export interface EventsListResponse {
     hasPrev: boolean;
   };
 }
+
+// types/editorial.ts
+export interface NewsArticle {
+  id: string;
+  code: string;
+  title: string;
+  slug: string;
+  excerpt: string;
+  content: string; 
+  read_time: number;
+  category: string[];
+  news_type: string;
+  featured_image_url: string;
+  source: string | null;
+  source_url: string | null;
+  published_at: string | null;
+  created_at: string;
+  views: number;
+  layout_type: 'card' | 'featured' | 'compact'; 
+}
