@@ -47,3 +47,22 @@ export interface NewsArticle {
   views: number;
   layout_type: 'card' | 'featured' | 'compact'; 
 }
+
+export interface DesignerDetail {
+  id: string;
+  name: string;
+  slug: string;
+  email: string;
+  excerpt: string;
+  read_time: number;
+  city: string;
+  country: string;
+  specialization: string;
+  portfolio_url: string | null;
+  featured_image_url: string | null;
+  avatar_url: string | null;
+  gallery: string[]; // Array of image URLs
+  awards: string[]; // Array of awards
+  layout_type: string;
+  published_at: string;
+}

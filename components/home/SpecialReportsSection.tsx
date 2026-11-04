@@ -65,7 +65,7 @@ export function SpecialReportsSection() {
                 <img
                   src={rep.featured_image_url}
                   alt={rep.title}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03] opacity-90 group-hover:opacity-100"
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                   loading="lazy"
                 />
               </div>

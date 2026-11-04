@@ -32,7 +32,7 @@ export function ProjectsSection() {
           {/* Left lead project (span 6) */}
           {barcelonaProject && (
             <div className="lg:col-span-6 flex flex-col group">
-              <div className="relative aspect-16/10 overflow-hidden bg-slate-100 mb-4 border border-slate-100">
+              <div className="relative aspect-20/10 overflow-hidden bg-slate-100 mb-4 border border-slate-100">
                 {!imgErr ? (
                   <img
                     src={barcelonaProject.imageUrl}
@@ -58,7 +58,7 @@ export function ProjectsSection() {
                 {barcelonaProject.category} / {barcelonaProject.location.split(',')[0]}
               </div>
 
-              <h3 className="text-2xl font-serif text-navy group-hover:text-accent-blue transition-colors leading-snug mb-2">
+              <h3 className="text-3xl font-serif text-navy transition-colors leading-snug mb-2">
                 <Link href={`/projects`}>{barcelonaProject.title}</Link>
               </h3>
 
@@ -80,10 +80,10 @@ export function ProjectsSection() {
           )}
 
           {/* Right 3 projects (span 6) */}
-          <div className="lg:col-span-6 divide-y divide-slate-200 flex flex-col justify-between">
+          <div className="lg:col-span-6 divide-y divide-slate-200 flex flex-col justify-start">
             {[mexicoCity, melbourne, helsinki].filter(Boolean).map((proj) => (
               <div key={proj!.id} className="py-4 first:pt-0 last:pb-0 flex items-start gap-4 group">
-                <div className="w-28 h-20 bg-slate-100 shrink-0 overflow-hidden border border-slate-100">
+                <div className="w-48 h-40 bg-slate-100 shrink-0 overflow-hidden border border-slate-100">
                   <img
                     src={proj!.imageUrl}
                     alt={proj!.title}
@@ -95,7 +95,7 @@ export function ProjectsSection() {
                   <div className="text-[11px] uppercase tracking-wider text-slate-500 mb-0.5 font-medium">
                     {proj!.category} / {proj!.location.split(',')[0]}
                   </div>
-                  <h4 className="text-base font-serif text-navy group-hover:text-accent-blue transition-colors leading-snug line-clamp-2 mb-1">
+                  <h4 className="text-2xl font-serif text-navy transition-colors leading-snug line-clamp-2 mb-1">
                     <Link href={`/projects`}>{proj!.title}</Link>
                   </h4>
                   <div className="text-xs text-slate-400">

@@ -112,7 +112,7 @@ export function HomeDecorSection() {
         </div>
       )}
 
-      <button
+      {/* <button
         type="button"
         aria-label={
           state.bookmarks.includes(article.id)
@@ -134,7 +134,7 @@ export function HomeDecorSection() {
               : 'text-slate-600'
           }`}
         />
-      </button>
+      </button> */}
     </div>
   );
 

@@ -26,7 +26,7 @@ export function ShowroomSection() {
           {/* Milan */}
           {milan && (
             <div className="flex flex-col group">
-              <div className="relative aspect-[16/10] overflow-hidden bg-slate-100 mb-3 border border-slate-100">
+              <div className="relative aspect-[20/10] overflow-hidden bg-slate-100 mb-3 border border-slate-100">
                 <img
                   src={milan.imageUrl}
                   alt={milan.headline}
@@ -37,7 +37,7 @@ export function ShowroomSection() {
               <div className="text-xs uppercase tracking-wider text-slate-500 mb-1 font-medium">
                 {milan.kicker}
               </div>
-              <h3 className="text-xl font-serif text-navy group-hover:text-accent-blue transition-colors leading-snug mb-2">
+              <h3 className="text-[26px] font-serif text-navy transition-colors leading-snug mb-2">
                 <Link href={`/showrooms`}>{milan.headline}</Link>
               </h3>
               <p className="text-xs sm:text-sm text-slate-600 leading-relaxed mb-3">
@@ -52,7 +52,7 @@ export function ShowroomSection() {
           {/* Singapore */}
           {singapore && (
             <div className="flex flex-col group">
-              <div className="relative aspect-[16/10] overflow-hidden bg-slate-100 mb-3 border border-slate-100">
+              <div className="relative aspect-[20/10] overflow-hidden bg-slate-100 mb-3 border border-slate-100">
                 <img
                   src={singapore.imageUrl}
                   alt={singapore.headline}
@@ -63,7 +63,7 @@ export function ShowroomSection() {
               <div className="text-xs uppercase tracking-wider text-slate-500 mb-1 font-medium">
                 {singapore.kicker}
               </div>
-              <h3 className="text-xl font-serif text-navy group-hover:text-accent-blue transition-colors leading-snug mb-2">
+              <h3 className="text-[26px] font-serif text-navy group-hover:text-accent-blue transition-colors leading-snug mb-2">
                 <Link href={`/showrooms`}>{singapore.headline}</Link>
               </h3>
               <p className="text-xs sm:text-sm text-slate-600 leading-relaxed mb-3">

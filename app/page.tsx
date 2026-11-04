@@ -51,22 +51,22 @@ export default function Home() {
       {/* <DecorSection /> */}
 
       {/* 11. Showroom Showcase */}
-      {/* <ShowroomSection /> */}
+      <ShowroomSection />
 
       {/* 12. Projects */}
-      {/* <ProjectsSection /> */}
+      <ProjectsSection />
 
       {/* 13. Products */}
-      {/* <ProductsSection /> */}
+      <ProductsSection />
 
       {/* 14. Editorial Desk & Designer Interviews */}
-      {/* <EditorialDeskSection /> */}
+      <EditorialDeskSection />
 
       {/* 15. Special Reports (Dark band) */}
       <SpecialReportsSection />
 
       {/* 16. Podcast & Video */}
-      {/* <PodcastVideoSection /> */}
+      <PodcastVideoSection />
 
       {/* 17. The Daily Brief Newsletter */}
       <NewsletterBand />
