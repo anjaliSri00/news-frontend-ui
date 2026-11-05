@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
-import { Link } from '../../lib/router';
-import { SectionHeader } from '../shared/SectionHeader';
-import { useAppState } from '../../lib/state/AppStateProvider';
-import { Bookmark } from 'lucide-react';
-import fetchApiResponse from '@/helper/api_data_store';
+import React, { useEffect, useState } from "react";
+import { Link } from "../../lib/router";
+import { SectionHeader } from "../shared/SectionHeader";
+import { useAppState } from "../../lib/state/AppStateProvider";
+import { Bookmark } from "lucide-react";
+import fetchApiResponse from "@/helper/api_data_store";
 
 interface NewsItem {
   id: string;
@@ -19,7 +19,7 @@ interface NewsItem {
   published_at: string | null;
   room_type: string;
   style: string;
-  layout_type: 'featured' | 'medium' | 'compact';
+  layout_type: "featured" | "medium" | "compact";
   views: number;
   likes: number;
   read_time?: number;
@@ -42,14 +42,14 @@ export function HomeDecorSection() {
     async function fetchHomeDecor() {
       try {
         const res = await fetchApiResponse<HomeDecorResponse>(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/home-decor`
+          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/home-decor`,
         );
 
         if (res.meta?.status === 200 && isMounted) {
           setArticles(res.data?.home_decor ?? []);
         }
       } catch (error) {
-        console.error('Failed to load home decor articles:', error);
+        console.error("Failed to load home decor articles:", error);
       } finally {
         if (isMounted) {
           setIsLoading(false);
@@ -65,29 +65,29 @@ export function HomeDecorSection() {
   }, []);
 
   const formatDate = (date: string | null) => {
-    if (!date) return '';
+    if (!date) return "";
 
     const parsedDate = new Date(date);
 
-    if (Number.isNaN(parsedDate.getTime())) return '';
+    if (Number.isNaN(parsedDate.getTime())) return "";
 
-    return parsedDate.toLocaleDateString('en-IN', {
-      day: 'numeric',
-      month: 'short',
-      year: 'numeric',
+    return parsedDate.toLocaleDateString("en-IN", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
     });
   };
 
   const formatCategory = (category: string) =>
     category
-      .split('-')
+      .split("-")
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(' ');
+      .join(" ");
 
   const renderArticleImage = (
     article: NewsItem,
     aspectClass: string,
-    imageClass: string
+    imageClass: string,
   ) => (
     <div
       className={`relative ${aspectClass} overflow-hidden bg-slate-100 border border-slate-100`}
@@ -111,30 +111,6 @@ export function HomeDecorSection() {
           Image unavailable
         </div>
       )}
-
-      {/* <button
-        type="button"
-        aria-label={
-          state.bookmarks.includes(article.id)
-            ? `Remove bookmark for ${article.title}`
-            : `Bookmark ${article.title}`
-        }
-        aria-pressed={state.bookmarks.includes(article.id)}
-        onClick={(event) => {
-          event.preventDefault();
-          event.stopPropagation();
-          toggleBookmark(article.id, article.title);
-        }}
-        className="absolute top-3 right-3 p-2 bg-white/90 text-navy shadow-xs rounded-xs"
-      >
-        <Bookmark
-          className={`w-4 h-4 ${
-            state.bookmarks.includes(article.id)
-              ? 'fill-navy text-navy'
-              : 'text-slate-600'
-          }`}
-        />
-      </button> */}
     </div>
   );
 
@@ -149,17 +125,17 @@ export function HomeDecorSection() {
       ) : null}
     </div>
   );
-const featured = articles.find(
-  (article) => article.layout_type === 'featured'
-);
+  const featured = articles.find(
+    (article) => article.layout_type === "featured",
+  );
 
-const mediumArticles = articles.filter(
-  (article) => article.layout_type === 'medium'
-);
+  const mediumArticles = articles.filter(
+    (article) => article.layout_type === "medium",
+  );
 
-const compactArticles = articles.filter(
-  (article) => article.layout_type === 'compact'
-);
+  const compactArticles = articles.filter(
+    (article) => article.layout_type === "compact",
+  );
 
   return (
     <section className="py-12 border-b border-slate-200">
@@ -186,10 +162,10 @@ const compactArticles = articles.filter(
               <div className="lg:col-span-4 flex flex-col group">
                 {renderArticleImage(
                   featured,
-                  'aspect-[6/3] mb-4',
-                  'w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02]'
+                  "aspect-[6/3] mb-4",
+                  "w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02]",
                 )}
-
+                
                 <div className="text-xs uppercase tracking-wider text-slate-600 mb-1 font-bold">
                   {formatCategory(featured.category)}
                 </div>
@@ -209,12 +185,15 @@ const compactArticles = articles.filter(
             )}
 
             {/* Secondary image article */}
-           {mediumArticles.map((article) => (
-  <div key={article.id} className="lg:col-span-3 flex flex-col group">
+            {mediumArticles.map((article) => (
+              <div
+                key={article.id}
+                className="lg:col-span-3 flex flex-col group"
+              >
                 {renderArticleImage(
                   article,
-                  'aspect-[10/6.8] mb-3',
-                  'w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]'
+                  "aspect-[10/6.8] mb-3",
+                  "w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]",
                 )}
 
                 <div className="text-xs uppercase tracking-wider text-slate-600 mb-1 font-bold">
@@ -222,9 +201,7 @@ const compactArticles = articles.filter(
                 </div>
 
                 <h4 className="text-[22px] font-lora text-navy leading-snug mb-2">
-                  <Link href={`/article/${article.slug}`}>
-                    {article.title}
-                  </Link>
+                  <Link href={`/article/${article.slug}`}>{article.title}</Link>
                 </h4>
 
                 <p className="text-xs text-slate-600 leading-relaxed mb-3 line-clamp-3">
@@ -233,15 +210,14 @@ const compactArticles = articles.filter(
 
                 {renderArticleMeta(article)}
               </div>
-              )
-            )}
+            ))}
 
             {/* Remaining text-focused articles */}
             <div className="lg:col-span-2 flex flex-col justify-start divide-y divide-slate-200">
               {compactArticles.map((article, index) => (
                 <div
                   key={article.id}
-                  className={`${index === 0 ? 'pb-5' : 'py-5'} group`}
+                  className={`${index === 0 ? "pb-5" : "py-5"} group`}
                 >
                   <div className="text-xs uppercase tracking-wider text-slate-600 mb-1 font-bold">
                     {formatCategory(article.category)}

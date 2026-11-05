@@ -1,4 +1,25 @@
 // Types for Website Event API
+
+export interface EventItem {
+  id: string;
+  code: string;
+  title: string;
+  slug: string;
+  excerpt: string;
+  content?: string;
+  category: string[]; // e.g. ["Symposium"] or ["Exhibition"]
+  venue: string;
+  city: string;
+  country: string;
+  start_date: string; // ISO string
+  end_date: string | null;
+  ticket_price?: string;
+  featured_image_url: string | null;
+  layout_type: 'banner' | 'list' | 'past' | string;
+  status: 'draft' | 'published' | 'archived';
+  registration_url?: string;
+}
+
 export interface EventWebsitePayload {
   id: string;
   title: string;
@@ -65,4 +86,54 @@ export interface DesignerDetail {
   awards: string[]; // Array of awards
   layout_type: string;
   published_at: string;
+}
+
+
+export interface FurnitureItem {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string;
+  content?: string;
+  read_time: number;
+  category: string[];
+  tags?: string[];
+  designer?: string;
+  brand?: string;
+  featured_image_url: string | null;
+  layout_type: string;
+  published_at: string | null;
+}
+
+
+export interface Designer {
+  id: string;
+  name: string;
+  slug: string;
+  email: string;
+  excerpt: string;
+  specialization: string;
+  city: string;
+  country: string;
+  featured_image_url: string | null;
+  avatar_url: string | null;
+  portfolio_url: string | null;
+  layout_type: string;
+  published_at: string | null;
+}
+
+export interface ProductItem {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string;
+  category: string[];
+  tags?: string[];
+  material?: string;       // e.g. "Oak, Brass"
+  brand?: string;
+  designer?: string;
+  price_range?: string;    // e.g. "£150 - £300"
+  featured_image_url: string | null;
+  published_at: string | null;
+  layout_type: string;
 }

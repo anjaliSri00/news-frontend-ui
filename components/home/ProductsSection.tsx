@@ -1,15 +1,44 @@
 "use client";
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from '../../lib/router';
 import { SectionHeader } from '../shared/SectionHeader';
-import { getAllProducts } from '../../lib/services';
-import { useAppState } from '../../lib/state/AppStateProvider';
-import { Heart } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
+import fetchApiResponse from '../../helper/api_data_store';
+import { ProductItem } from '../../types/editorial';
 
 export function ProductsSection() {
-  const { toggleWishlist, state } = useAppState();
-  const products = getAllProducts().slice(0, 4);
+  const [products, setProducts] = useState<ProductItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchProducts() {
+      try {
+        // Fetch top 4 products from Backend API
+        const res = await fetchApiResponse<{ products: ProductItem[] }>(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/products?limit=4`
+        );
+        if (res.meta?.status === 200 && res.data?.products) {
+          setProducts(res.data.products);
+        }
+      } catch (err) {
+        console.error('Failed to fetch products:', err);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchProducts();
+  }, []);
+
+  if (isLoading) {
+    return (
+      <section className="py-16 border-b border-slate-200 flex justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-navy" />
+      </section>
+    );
+  }
+
+  if (products.length === 0) return null;
 
   return (
     <section className="py-12 border-b border-slate-200">
@@ -17,53 +46,55 @@ export function ProductsSection() {
         <SectionHeader
           kicker="New & noteworthy / Independently selected"
           title="Products"
-          viewAllHref="/products"
+          viewAllHref="/category/products"
           viewAllText="View all Products"
         />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {products.map((prod) => {
-            const inWishlist = state.wishlist.includes(prod.id);
-
-            return (
-              <div key={prod.id} className="flex flex-col group">
-                <div className="relative aspect-4/3 overflow-hidden bg-slate-100 mb-3 border border-slate-100">
+          {products.map((prod) => (
+            <div key={prod.id} className="flex flex-col group">
+              
+              {/* Image */}
+              <div className="relative aspect-[4/3] overflow-hidden bg-slate-100 mb-3 border border-slate-100">
+                {prod.featured_image_url ? (
                   <img
-                    src={prod.imageUrl}
+                    src={prod.featured_image_url}
                     alt={prod.title}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                     loading="lazy"
                   />
-                  <button
-                    onClick={(e) => {
-                      e.preventDefault();
-                      toggleWishlist(prod.id, prod.title);
-                    }}
-                    aria-label="Add to wishlist"
-                    className="absolute top-2.5 right-2.5 p-1.5 bg-white/90 text-navy rounded-xs transition-colors shadow-2xs"
-                  >
-                    <Heart className={`w-3.5 h-3.5 ${inWishlist ? 'fill-rose-500 text-rose-500' : 'text-slate-600'}`} />
-                  </button>
-                </div>
-
-                <div className="text-xs uppercase tracking-wider text-slate-500 mb-1 font-medium">
-                  {prod.category}
-                </div>
-
-                <h3 className="text-base font-serif text-navy group-hover:text-accent-blue transition-colors leading-snug mb-1.5">
-                  <Link href="/products">{prod.title}</Link>
-                </h3>
-
-                <p className="text-xs text-slate-500 mb-2 font-mono">
-                  {prod.materials}
-                </p>
-
-                <div className="mt-auto text-[11px] text-slate-400">
-                  {prod.dateAdded} · {prod.featureBadge}
-                </div>
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center text-gray-400 text-xs">
+                    No Image
+                  </div>
+                )}
               </div>
-            );
-          })}
+
+              {/* Category */}
+              <div className="text-xs uppercase tracking-wider text-slate-500 mb-1 font-medium">
+                {prod.category?.[0] || 'Product'}
+              </div>
+
+              {/* Title */}
+              <h3 className="text-base font-serif text-navy group-hover:text-accent-blue transition-colors leading-snug mb-1.5 line-clamp-2">
+                <Link href={`/product/${prod.slug}`}>{prod.title}</Link>
+              </h3>
+
+              {/* Material / Detail */}
+              <p className="text-xs text-slate-500 mb-2 font-mono truncate">
+                {prod.material || prod.excerpt || 'Details unavailable'}
+              </p>
+
+              {/* Price & Date (No Demo Data) */}
+              <div className="mt-auto text-[11px] text-slate-400">
+                {prod.price_range ? `${prod.price_range} · ` : ''} 
+                {prod.published_at 
+                  ? new Date(prod.published_at).toLocaleDateString('en-GB', { month: 'short', year: 'numeric' })
+                  : 'Recently added'
+                }
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>
