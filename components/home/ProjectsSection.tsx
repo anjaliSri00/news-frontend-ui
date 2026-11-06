@@ -1,22 +1,50 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from '../../lib/router';
 import { SectionHeader } from '../shared/SectionHeader';
-import { getAllProjects, getArticleById } from '../../lib/services';
-import { useAppState } from '../../lib/state/AppStateProvider';
-import { Bookmark, ArrowRight } from 'lucide-react';
+import { ArrowRight, Loader2 } from 'lucide-react';
+import fetchApiResponse from '../../helper/api_data_store';
+import { ProjectItem } from '../../types/editorial';
 
 export function ProjectsSection() {
-  const { toggleBookmark, state } = useAppState();
-  const [imgErr, setImgErr] = useState(false);
+  const [projects, setProjects] = useState<ProjectItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const barcelonaProject = getAllProjects().find((p) => p.id === 'barcelona-workshop-living');
-  const mexicoCity = getAllProjects().find((p) => p.id === 'mexico-city-courtyard-hotel');
-  const melbourne = getAllProjects().find((p) => p.id === 'melbourne-neighbourhood-office');
-  const helsinki = getAllProjects().find((p) => p.id === 'helsinki-civic-reading-room');
+  useEffect(() => {
+    async function fetchProjects() {
+      try {
+        // Fetch top 4 projects from API
+        const res = await fetchApiResponse<{ projects: ProjectItem[] }>(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/projects?limit=4`
+        );
+        if (res.meta?.status === 200 && res.data?.projects) {
+          setProjects(res.data.projects);
+        }
+      } catch (err) {
+        console.error('Failed to fetch projects:', err);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchProjects();
+  }, []);
 
-  const isSaved = barcelonaProject ? state.bookmarks.includes(barcelonaProject.id) : false;
+  if (isLoading) {
+    return (
+      <section className="py-16 border-b border-slate-200 flex justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-navy" />
+      </section>
+    );
+  }
+
+  if (projects.length === 0) return null;
+
+  // 1. Left Featured Project
+  const featuredProject = projects.find(p => p.layout_type === 'featured') || projects[0];
+  
+  // 2. Right Cards (Baaki 3 projects)
+  const sideProjects = projects.filter(p => p.id !== featuredProject.id).slice(0, 3);
 
   return (
     <section className="py-12 border-b border-slate-200">
@@ -24,52 +52,46 @@ export function ProjectsSection() {
         <SectionHeader
           kicker="Built ideas, around the world"
           title="Projects"
-          viewAllHref="/projects"
+          viewAllHref="/category/projects"
           viewAllText="View all Projects"
         />
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10">
-          {/* Left lead project (span 6) */}
-          {barcelonaProject && (
+          
+          {/* Left lead project (Featured) */}
+          {featuredProject && (
             <div className="lg:col-span-6 flex flex-col group">
-              <div className="relative aspect-20/10 overflow-hidden bg-slate-100 mb-4 border border-slate-100">
-                {!imgErr ? (
+              <div className="relative aspect-[20/10] overflow-hidden bg-slate-100 mb-4 border border-slate-100">
+                {featuredProject.featured_image_url ? (
                   <img
-                    src={barcelonaProject.imageUrl}
-                    alt={barcelonaProject.title}
-                    referrerPolicy="no-referrer"
-                    onError={() => setImgErr(true)}
+                    src={featuredProject.featured_image_url}
+                    alt={featuredProject.title}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
                     loading="lazy"
                   />
-                ) : null}
-                <button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    toggleBookmark(barcelonaProject.id, barcelonaProject.title);
-                  }}
-                  className="absolute top-3 right-3 p-1.5 bg-white/90 text-navy shadow-xs rounded-xs"
-                >
-                  <Bookmark className={`w-3.5 h-3.5 ${isSaved ? 'fill-navy text-navy' : 'text-slate-600'}`} />
-                </button>
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center text-gray-400 text-xs">No Image</div>
+                )}
               </div>
 
               <div className="text-xs uppercase tracking-wider text-slate-500 mb-1 font-medium">
-                {barcelonaProject.category} / {barcelonaProject.location.split(',')[0]}
+                {featuredProject.category?.[0] || 'Project'} / {featuredProject.city || 'Location'}
               </div>
 
               <h3 className="text-3xl font-serif text-navy transition-colors leading-snug mb-2">
-                <Link href={`/projects`}>{barcelonaProject.title}</Link>
+                <Link href={`/article/${featuredProject.slug}`}>{featuredProject.title}</Link>
               </h3>
 
-              <p className="text-slate-600 text-sm leading-relaxed mb-4">
-                {barcelonaProject.summary}
+              <p className="text-slate-600 text-sm leading-relaxed mb-4 line-clamp-3">
+                {featuredProject.excerpt}
               </p>
 
               <div className="mt-auto pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
-                <span>By {barcelonaProject.architect} · 14 Oct 2026 · 9 min read</span>
+                <span>
+                  By {featuredProject.architect || 'Architect'} · {featuredProject.year || '2024'}
+                </span>
                 <Link
-                  href={`/projects`}
+                  href={`/article/${featuredProject.slug}`}
                   className="font-medium text-navy hover:text-accent-blue inline-flex items-center gap-1"
                 >
                   <span>Explore project</span>
@@ -79,32 +101,37 @@ export function ProjectsSection() {
             </div>
           )}
 
-          {/* Right 3 projects (span 6) */}
+          {/* Right 3 projects (Cards) */}
           <div className="lg:col-span-6 divide-y divide-slate-200 flex flex-col justify-start">
-            {[mexicoCity, melbourne, helsinki].filter(Boolean).map((proj) => (
-              <div key={proj!.id} className="py-4 first:pt-0 last:pb-0 flex items-start gap-4 group">
+            {sideProjects.map((proj) => (
+              <div key={proj.id} className="py-4 first:pt-0 last:pb-0 flex items-start gap-4 group">
                 <div className="w-48 h-40 bg-slate-100 shrink-0 overflow-hidden border border-slate-100">
-                  <img
-                    src={proj!.imageUrl}
-                    alt={proj!.title}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    loading="lazy"
-                  />
+                  {proj.featured_image_url ? (
+                    <img
+                      src={proj.featured_image_url}
+                      alt={proj.title}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-gray-400 text-xs">No Image</div>
+                  )}
                 </div>
                 <div className="flex-grow min-w-0">
                   <div className="text-[11px] uppercase tracking-wider text-slate-500 mb-0.5 font-medium">
-                    {proj!.category} / {proj!.location.split(',')[0]}
+                    {proj.category?.[0] || 'Project'} / {proj.city || 'Location'}
                   </div>
                   <h4 className="text-2xl font-serif text-navy transition-colors leading-snug line-clamp-2 mb-1">
-                    <Link href={`/projects`}>{proj!.title}</Link>
+                    <Link href={`/article/${proj.slug}`}>{proj.title}</Link>
                   </h4>
-                  <div className="text-xs text-slate-400">
-                    {proj!.year} · {proj!.architect}
+                  <div className="text-xs text-slate-400 mt-2">
+                    {proj.year || '2024'} · {proj.architect || 'Architect'}
                   </div>
                 </div>
               </div>
             ))}
           </div>
+
         </div>
       </div>
     </section>

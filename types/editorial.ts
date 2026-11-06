@@ -137,3 +137,30 @@ export interface ProductItem {
   published_at: string | null;
   layout_type: string;
 }
+
+export interface TrendItem {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string;
+  category: string[]; // e.g. ["design"]
+  trend_category: string; // e.g. "color", "material", etc.
+  featured_image_url: string | null;
+  read_time?: number;
+  published_at: string | null;
+}
+
+export interface ProjectItem {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string;
+  category: string[];
+  city?: string;
+  country?: string;
+  architect?: string;
+  year?: number;
+  featured_image_url: string | null;
+  layout_type: string; // 'featured' | 'card'
+  published_at?: string | null;
+}

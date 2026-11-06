@@ -1,40 +1,58 @@
 "use client";
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from '../../lib/router';
 import { SectionHeader } from '../shared/SectionHeader';
-import { getArticleById } from '../../lib/services';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight, Loader2 } from 'lucide-react';
+import fetchApiResponse from '../../helper/api_data_store';
+import { TrendItem } from '../../types/editorial';
 
 export function TrendsSection() {
-  const blueArticle = getArticleById('blue-is-back-depth');
-  const luxuryArticle = getArticleById('new-luxury-room-with-purpose');
-  const imperfectArticle = getArticleById('imperfect-finishes-considered-spaces');
+  const [trends, setTrends] = useState<TrendItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const trendsData = [
-    { 
-      article: blueArticle, 
-      defaultCat: 'COLOUR FORECAST',
-      image: blueArticle?.image || 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&q=80&w=800'
-    },
-    { 
-      article: luxuryArticle, 
-      defaultCat: 'SPATIAL SHIFTS',
-      image: luxuryArticle?.image || 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&q=80&w=800'
-    },
-    { 
-      article: imperfectArticle, 
-      defaultCat: 'MATERIAL CULTURE',
-      image: imperfectArticle?.image || 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&q=80&w=800'
+  useEffect(() => {
+    async function fetchTrends() {
+      try {
+        // Fetch top 3 trends from public API
+        const res = await fetchApiResponse<{ trends: TrendItem[] }>(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/trends?limit=3`
+        );
+        if (res.meta?.status === 200 && res.data?.trends) {
+          setTrends(res.data.trends);
+        }
+      } catch (err) {
+        console.error('Failed to fetch trends:', err);
+      } finally {
+        setIsLoading(false);
+      }
     }
-  ];
+    fetchTrends();
+  }, []);
 
+  // Static threads (ya future me API se aayen)
   const threads = [
     { label: 'Adaptive reuse', href: '/category/projects' },
     { label: 'Quiet technology', href: '/category/design-tech' },
     { label: 'Circular materials', href: '/reports' },
     { label: 'New domestic rituals', href: '/category/home-decor' },
   ];
+
+  // Format date helper
+  const formatDate = (dateStr: string | null) => {
+    if (!dateStr) return 'Recent';
+    return new Date(dateStr).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+  };
+
+  if (isLoading) {
+    return (
+      <section className="py-16 border-b border-slate-200 bg-white flex justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-navy" />
+      </section>
+    );
+  }
+
+  if (trends.length === 0) return null;
 
   return (
     <section className="py-12 border-b border-slate-200 bg-white">
@@ -49,44 +67,46 @@ export function TrendsSection() {
 
         {/* 3-Column Grid for Trends */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10 mt-6">
-          {trendsData.map(({ article, defaultCat, image }, idx) => {
-            if (!article) return null;
-
-            return (
-              <div key={idx} className="flex flex-col group cursor-pointer">
-                
-                {/* 1. Image Container (Fixed Aspect Ratio) */}
-                <div className="aspect-[2/1] w-full overflow-hidden bg-slate-100 mb-5">
+          {trends.map((trend) => (
+            <div key={trend.id} className="flex flex-col group cursor-pointer">
+              
+              {/* 1. Image Container (Fixed Aspect Ratio) */}
+              <div className="aspect-[2/1] w-full overflow-hidden bg-slate-100 mb-5">
+                {trend.featured_image_url ? (
                   <img
-                    src={image}
-                    alt={article.title}
+                    src={trend.featured_image_url}
+                    alt={trend.title}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                     loading="lazy"
                   />
-                </div>
-
-                {/* 2. Category Tag */}
-                <div className="text-[11px] font-bold uppercase tracking-widest text-[#3B6BB0] mb-2">
-                  {article.subCategory || defaultCat}
-                </div>
-
-                {/* 3. Title */}
-                <h3 className="text-[26px] font-serif text-[#1a1a1a] group-hover:text-[#3B6BB0] transition-colors leading-tight mb-3">
-                  <Link href={`/article/${article.id}`}>{article.title}</Link>
-                </h3>
-
-                {/* 4. Excerpt */}
-                <p className="text-[15px] text-slate-600 leading-relaxed mb-4 line-clamp-3">
-                  {article.deck}
-                </p>
-
-                {/* 5. Meta (Date & Read Time) */}
-                <div className="mt-auto text-[13px] text-slate-400">
-                  {article.date} · {article.readTime}
-                </div>
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center text-gray-400 text-xs">
+                    No Image
+                  </div>
+                )}
               </div>
-            );
-          })}
+
+              {/* 2. Category Tag (Uses trend_category) */}
+              <div className="text-[11px] font-bold uppercase tracking-widest text-[#3B6BB0] mb-2">
+                {trend.trend_category || trend.category?.[0] || 'Trend'}
+              </div>
+
+              {/* 3. Title */}
+              <h3 className="text-[26px] font-serif text-[#1a1a1a] group-hover:text-[#3B6BB0] transition-colors leading-tight mb-3">
+                <Link href={`/article/${trend.slug}`}>{trend.title}</Link>
+              </h3>
+
+              {/* 4. Excerpt */}
+              <p className="text-[15px] text-slate-600 leading-relaxed mb-4 line-clamp-3">
+                {trend.excerpt}
+              </p>
+
+              {/* 5. Meta (Date & Read Time) */}
+              <div className="mt-auto text-[13px] text-slate-400">
+                {formatDate(trend.published_at)} {trend.read_time ? `· ${trend.read_time} min read` : ''}
+              </div>
+            </div>
+          ))}
         </div>
 
         {/* Follow the thread bar */}
