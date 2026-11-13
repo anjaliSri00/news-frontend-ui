@@ -7,7 +7,6 @@ export function UpcomingEvents({ events }: { events: EventItem[] }) {
   return (
     <section className="w-full px-6 py-12">
       <div className="max-w-7xl mx-auto">
-        
         <div className="flex items-center justify-between mb-6">
           <h4 className="text-[11px] font-bold uppercase tracking-widest text-gray-500">
             Upcoming Events ({events.length})
@@ -26,7 +25,7 @@ export function UpcomingEvents({ events }: { events: EventItem[] }) {
                 
                 <div className="flex items-center gap-6">
                   {/* Date Badge */}
-                  <div className="bg-[#000615] text-white p-3 text-center min-w-[70px]">
+                  <div className="bg-[#000615] text-white p-3 text-center min-w-17.5">
                     <span className="block text-[10px] font-bold uppercase tracking-widest text-blue-200">{month}</span>
                     <span className="block font-serif text-2xl">{day}</span>
                   </div>
@@ -51,7 +50,7 @@ export function UpcomingEvents({ events }: { events: EventItem[] }) {
                     href={event.registration_url || '#'}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="bg-[#000615] text-white px-6 py-2.5 text-[11px] font-bold uppercase tracking-wider hover:bg-[#0b1f3a] transition-colors"
+                    className="bg-[#000615] text-white px-6 py-2.5 text-[11px] font-bold uppercase tracking-wider hover:bg-navy transition-colors"
                   >
                     Register
                   </a>

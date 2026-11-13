@@ -164,3 +164,46 @@ export interface ProjectItem {
   layout_type: string; // 'featured' | 'card'
   published_at?: string | null;
 }
+
+
+export interface ShowroomItem {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string;
+  city?: string;
+  country?: string;
+  brand?: string;
+  featured_image_url: string | null;
+  published_at?: string;
+  read_time?: number;
+  layout_type?: string;
+}
+
+export interface EditorialItem {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string;
+  category: string[];
+  column_name?: string;
+  editor?: string;
+  featured_image_url: string | null;
+  published_at: string | null;
+  read_time?: number;
+  layout_type: string;
+}
+
+export interface InterviewDesigner {
+  id: string;
+  name: string;
+  slug: string;
+  specialization: string;
+  city: string;
+  country: string;
+  excerpt: string; // Used as quote here
+  avatar_url: string | null;
+  featured_image_url: string | null;
+  interview_by?: string;
+  published_at?: string | null;
+}

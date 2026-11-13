@@ -36,22 +36,14 @@ export default async function DesignersPage() {
 
   return (
     <div className="flex flex-col w-full bg-background min-h-screen text-on-surface">
-      
-      {/* 1. Hero Section */}
       <DesignerHero totalDesigners={designers.length} />
 
-      {/* 2. Filter Bar */}
       <DesignerFilter />
 
-      {/* 3. Spotlight Profile (Agar data hai to) */}
       {spotlightDesigner && (
         <DesignerSpotlight designer={spotlightDesigner} />
       )}
-
-      {/* 4. Interview Highlights (Static Text) */}
       <DesignerQuotes />
-
-      {/* 5. Designer Grid */}
       <DesignerGrid designers={gridDesigners} />
       
     </div>

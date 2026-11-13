@@ -85,14 +85,12 @@ export function DesignersSection() {
 
         {/* HORIZONTAL SCROLL CONTAINER */}
         <div className="relative group/scroll">
-          
           <button 
             onClick={() => scroll("left")}
             className="hidden lg:flex absolute -left-5 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white shadow-md border border-gray-200 rounded-full items-center justify-center text-gray-600 hover:text-[#3B6BB0] hover:scale-110 transition-all opacity-0 group-hover/scroll:opacity-100"
           >
             <ChevronLeft className="w-6 h-6" />
           </button>
-
           <div 
             ref={scrollContainerRef}
             className="flex gap-4 md:gap-6 overflow-x-auto snap-x snap-mandatory pb-8 scrollbar-hide pt-2"
@@ -109,6 +107,7 @@ export function DesignersSection() {
                   {/* Image Container */}
                   <div className="relative aspect-4/3 w-full overflow-hidden bg-slate-100 mb-4 md:mb-6">
                     {imageUrl ? (
+                      // eslint-disable-next-line @next/next/no-img-element
                       <img
                         src={imageUrl}
                         alt={designer.name}
@@ -121,22 +120,18 @@ export function DesignersSection() {
                       </div>
                     )}
                   </div>
-
                   {/* Specialization / Location Tag */}
                   <div className="text-[10px] md:text-[11px] font-bold uppercase tracking-[0.1em] text-[#3B6BB0] mb-2 md:mb-3">
                     {designer.specialization || 'Designer'} • {designer.city}
                   </div>
-
                   {/* Name as Title (Link to Article) */}
                   <h3 className="text-[18px] md:text-[22px] font-serif text-[#1a1a1a] leading-[1.3] mb-2 md:mb-3 group-hover:text-[#3B6BB0] transition-colors line-clamp-2 md:line-clamp-3">
                     <Link href={`/designers/${designer.slug}`}>{designer.name}</Link>
                   </h3>
-
                   {/* Excerpt */}
                   <p className="text-[13px] md:text-[15px] text-gray-600 leading-relaxed line-clamp-3 mb-4">
                     {designer.excerpt}
                   </p>
-
                   {/* Read Time (Optional - placed at bottom) */}
                   <div className="mt-auto text-[11px] text-slate-400 font-medium">
                     {designer.read_time} min read
@@ -145,7 +140,6 @@ export function DesignersSection() {
               );
             })}
           </div>
-
           <button 
             onClick={() => scroll("right")}
             className="hidden lg:flex absolute -right-5 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white shadow-md border border-gray-200 rounded-full items-center justify-center text-gray-600 hover:text-[#3B6BB0] hover:scale-110 transition-all opacity-0 group-hover/scroll:opacity-100"
@@ -153,7 +147,6 @@ export function DesignersSection() {
             <ChevronRight className="w-6 h-6" />
           </button>
         </div>
-
       </div>
     </section>
   );

@@ -172,7 +172,7 @@ useEffect(() => {
                       className="inline-flex items-center gap-1 text-xs rounded-sm py-2 px-4 font-medium bg-navy text-white transition-colors cursor-pointer uppercase tracking-wider"
                     >
                       <span>{event.actionText}</span>
-                      <ArrowUpRight className="w-3.5 h-3.5" />
+                      <ArrowUpRight className="w-3.5 h-3.5" /> 
                     </a>
                   )}
                 </div>

@@ -353,6 +353,7 @@ import { EventFilters } from '@/components/events/EventFilters';
 import { UpcomingEvents } from '@/components/events/UpcomingEvents';
 import { PastEvents } from '@/components/events/PastEvents';
 import { EventHero } from '../events/EventHero';
+import { connection } from 'next/server';
 
 export default async function EventsPage() {
   let events: EventItem[] = [];
@@ -369,6 +370,7 @@ export default async function EventsPage() {
     console.error('Failed to load events:', error);
   }
 
+  await connection();
   // Separate events based on date and layout
   const now = new Date();
   const featuredEvent = events.find(e => e.layout_type === 'banner') || events[0];

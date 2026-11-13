@@ -48,7 +48,7 @@ export function DesignTechSection() {
 
   if (isLoading) {
     return (
-      <section className="py-16 bg-[#F3F8FF] flex justify-center">
+      <section className="py-16 bg-pale-blue flex justify-center">
         <Loader2 className="w-8 h-8 animate-spin text-navy" />
       </section>
     );
@@ -62,22 +62,21 @@ export function DesignTechSection() {
   const compactArticle = articles.find(a => a.layout_type === 'compact'); // Right side box
 
   return (
-    <section className="py-12 bg-[#F3F8FF]">
+    <section className="py-12 bg-pale-blue">
       <div className="max-w-screen-3xl w-full mx-auto px-4 sm:px-18">
         <SectionHeader
           kicker="Intelligence, without intrusion"
           title="Design Tech / Technology Hub"
           viewAllHref="/category/design-tech"
           viewAllText="View all Design Tech"
-        />
-        
+        /> 
         <div className="grid grid-cols-1 lg:grid-cols-11 gap-8 lg:gap-10">
-          
           {/* 1. LEFT: Featured Article */}
           {featuredArticle ? (
             <div className="lg:col-span-4 flex flex-col group">
-              <div className="relative aspect-[6/2.5] overflow-hidden bg-slate-100 mb-4 border border-slate-100">
+              <div className="relative aspect-6/2.5 overflow-hidden bg-slate-100 mb-4 border border-slate-100">
                 {featuredArticle.featured_image_url && (
+                  // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={featuredArticle.featured_image_url}
                     alt={featuredArticle.title}
@@ -103,7 +102,6 @@ export function DesignTechSection() {
                Left Featured Slot (No Data)
              </div>
           )}
-
           {/* 2. MIDDLE: 2 Cards Stack */}
           <div className="lg:col-span-4 flex flex-col justify-start divide-slate-200">
             {cardArticles.length > 0 ? (
@@ -127,17 +125,16 @@ export function DesignTechSection() {
               <div className="text-slate-400 text-sm italic p-4">No middle cards available</div>
             )}
           </div>
-
           {/* 3. RIGHT: Practical Brief (Compact Box) */}
           <div className="lg:col-span-3 h-auto bg-white border border-slate-200 p-6 flex flex-col justify-start shadow-sm rounded-sm">
             {compactArticle ? (
               <>
                 <div>
-                  <span className="text-[10px] uppercase tracking-[0.1em] text-[#3B6BB0] font-bold block mb-3">
+                  <span className="text-[10px] uppercase tracking-widest text-[#3B6BB0] font-bold block mb-3">
                     THE PRACTICAL BRIEF
                   </span>
                   
-                  <h3 className="text-[22px] font-serif text-[#0b1f3a] mb-3 leading-snug">
+                  <h3 className="text-[22px] font-serif text-navy mb-3 leading-snug">
                     {compactArticle.extra?.checklistTitle || "Before you specify a smart home"}
                   </h3>
                   
@@ -156,7 +153,6 @@ export function DesignTechSection() {
                     ))}
                   </ol>
                 </div>
-                
                 <div className="pt-5 border-t border-slate-200 mt-6">
                   <Link 
                     href={compactArticle.extra?.buttonUrl || "/category/design-tech"} 
@@ -171,7 +167,6 @@ export function DesignTechSection() {
               <div className="text-slate-400 text-sm italic">No compact box available</div>
             )}
           </div>
-
         </div>
       </div>
     </section>

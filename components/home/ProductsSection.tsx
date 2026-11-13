@@ -55,8 +55,9 @@ export function ProductsSection() {
             <div key={prod.id} className="flex flex-col group">
               
               {/* Image */}
-              <div className="relative aspect-[4/3] overflow-hidden bg-slate-100 mb-3 border border-slate-100">
+              <div className="relative aspect-4/3 overflow-hidden bg-slate-100 mb-3 border border-slate-100">
                 {prod.featured_image_url ? (
+                  // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={prod.featured_image_url}
                     alt={prod.title}

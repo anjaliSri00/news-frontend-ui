@@ -8,6 +8,7 @@ import EventsPage from '@/components/pages/EventsPage';
 import type { CategorySlug } from '@/lib/models';
 import { Link } from '@/lib/router';
 import fetchApiResponse from '@/helper/api_data_store';
+import ShowroomsPage from '../showroom-showcase/page';
 
 // 👇 Designer interface define karo
 interface DesignerItem {
@@ -114,8 +115,9 @@ async function CategoryContent({ params }: { params: Promise<{ slug: string }> }
                   href={`/designers/${designer.slug}`} 
                   className="group flex flex-col"
                 >
-                  <div className="aspect-[4/3] w-full overflow-hidden bg-slate-100 mb-4 relative">
+                  <div className="aspect-4/3 w-full overflow-hidden bg-slate-100 mb-4 relative">
                     {imageUrl ? (
+                    // eslint-disable-next-line @next/next/no-img-element
                       <img
                         src={imageUrl}
                         alt={designer.name}
@@ -144,6 +146,12 @@ async function CategoryContent({ params }: { params: Promise<{ slug: string }> }
         </div>
       </div>
     );
+  }
+
+  if(slug === "showroom-showcase"){
+    return (
+      <ShowroomsPage/>
+    )
   }
 
   // 3. Default Category Page

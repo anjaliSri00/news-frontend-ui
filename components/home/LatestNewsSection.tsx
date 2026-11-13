@@ -128,12 +128,14 @@ export function LatestNewsSection() {
                         <div className="flex-1 min-w-0 flex flex-col">
                           <div className='flex'>
                             <div className="relative w-27.5 sm:w-30 aspect-4/3 shrink-0 overflow-hidden bg-slate-100">
-                              <img
+                              { article?.featured_image_url && (
+                                // eslint-disable-next-line @next/next/no-img-element
+                                <img
                                 src={article.featured_image_url}
                                 alt={article.title}
                                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                                 loading="lazy"
-                              />
+                              />)}
                             </div>
                             <div className='flex flex-col py-2 px-4'>
                               <div className="text-[10px] sm:text-[11px] uppercase tracking-[0.14em] text-accent-blue font-semibold mb-1.5">
@@ -165,12 +167,14 @@ export function LatestNewsSection() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {articles.slice(0, 4).map((article) => (
               <Link key={article.id} href={`/article/${article.slug}`} className="group flex flex-col">
-                <div className="aspect-[4/3] w-full overflow-hidden bg-slate-100 mb-4">
+                <div className="aspect-4/3 w-full overflow-hidden bg-slate-100 mb-4">
+                 {article?.featured_image_url && (
+                  // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={article.featured_image_url}
                     alt={article.title}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
+                  />)}
                 </div>
                 <div className="text-[10px] uppercase tracking-widest text-accent-blue font-bold mb-2">
                   {article.category?.[0] || 'News'}
@@ -185,8 +189,7 @@ export function LatestNewsSection() {
             ))}
           </div>
         )}
-
-        {/* 👇 COMPACT LIST: Niche text-only list (agar compact articles hain) 👇 */}
+        
         {compactArticles.length > 0 && (
           <div className="mt-12 pt-8 border-t border-slate-200">
             <div className="flex flex-col divide-y divide-slate-200">

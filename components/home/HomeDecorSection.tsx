@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import { Link } from "../../lib/router";
 import { SectionHeader } from "../shared/SectionHeader";
 import { useAppState } from "../../lib/state/AppStateProvider";
-import { Bookmark } from "lucide-react";
 import fetchApiResponse from "@/helper/api_data_store";
 
 interface NewsItem {
@@ -30,7 +29,6 @@ interface HomeDecorResponse {
 }
 
 export function HomeDecorSection() {
-  const { toggleBookmark, state } = useAppState();
 
   const [articles, setArticles] = useState<NewsItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -93,6 +91,7 @@ export function HomeDecorSection() {
       className={`relative ${aspectClass} overflow-hidden bg-slate-100 border border-slate-100`}
     >
       {!imageErrors[article.id] && article.featured_image ? (
+        // eslint-disable-next-line @next/next/no-img-element
         <img
           src={article.featured_image}
           alt={article.title}

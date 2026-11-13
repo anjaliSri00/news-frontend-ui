@@ -15,9 +15,6 @@ export function DecorSection() {
   const lighting = getArticleById("softer-light-paper-pendants");
   const artAtHome = getArticleById("one-well-placed-work-change-room");
 
-  const isTextilesSaved = textiles
-    ? state.bookmarks.includes(textiles.id)
-    : false;
 
   return (
     <section className="py-12 border-b border-slate-200">
@@ -32,8 +29,9 @@ export function DecorSection() {
           {/* Left large feature (span 6) */}
           {textiles && (
             <div className="lg:col-span-7 flex gap-4 flex-row group">
-              <div className="relative aspect-[3/2] overflow-hidden bg-slate-100 mb-4 border border-slate-100">
+              <div className="relative aspect-3/2 overflow-hidden bg-slate-100 mb-4 border border-slate-100">
                 {!imgErr ? (
+                  // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={textiles.imageUrl}
                     alt={textiles.title}
@@ -43,17 +41,6 @@ export function DecorSection() {
                     loading="lazy"
                   />
                 ) : null}
-                {/* <button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    toggleBookmark(textiles.id, textiles.title);
-                  }}
-                  className="absolute top-3 right-3 p-1.5 bg-white/90 text-navy shadow-xs rounded-xs"
-                >
-                  <Bookmark
-                    className={`w-3.5 h-3.5 ${isTextilesSaved ? "fill-navy text-navy" : "text-slate-600"}`}
-                  />
-                </button> */}
               </div>
               <div className="p-4">
               <div className="text-xs uppercase tracking-wider text-slate-500 mb-1 font-medium">
@@ -97,7 +84,7 @@ export function DecorSection() {
                     loading="lazy"
                   />
                 </div>
-                <div className="flex-grow min-w-0">
+                <div className="grow min-w-0">
                   <div className="text-[11px] uppercase tracking-wider text-slate-500 mb-0.5 font-medium">
                     {art!.subCategory || art!.categoryName}
                   </div>

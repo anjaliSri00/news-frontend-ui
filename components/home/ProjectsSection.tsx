@@ -92,8 +92,7 @@ export function ProjectsSection() {
                 </span>
                 <Link
                   href={`/article/${featuredProject.slug}`}
-                  className="font-medium text-navy hover:text-accent-blue inline-flex items-center gap-1"
-                >
+                  className="font-medium text-navy hover:text-accent-blue inline-flex items-center gap-1">
                   <span>Explore project</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
@@ -107,6 +106,7 @@ export function ProjectsSection() {
               <div key={proj.id} className="py-4 first:pt-0 last:pb-0 flex items-start gap-4 group">
                 <div className="w-48 h-40 bg-slate-100 shrink-0 overflow-hidden border border-slate-100">
                   {proj.featured_image_url ? (
+                  // eslint-disable-next-line @next/next/no-img-element
                     <img
                       src={proj.featured_image_url}
                       alt={proj.title}
@@ -117,7 +117,7 @@ export function ProjectsSection() {
                     <div className="w-full h-full flex items-center justify-center text-gray-400 text-xs">No Image</div>
                   )}
                 </div>
-                <div className="flex-grow min-w-0">
+                <div className="grow min-w-0">
                   <div className="text-[11px] uppercase tracking-wider text-slate-500 mb-0.5 font-medium">
                     {proj.category?.[0] || 'Project'} / {proj.city || 'Location'}
                   </div>

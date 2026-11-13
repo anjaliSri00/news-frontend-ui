@@ -18,9 +18,9 @@ export function EventFilters() {
           </select>
           <select className="bg-white border border-gray-200 px-4 py-2 text-[13px] text-gray-700 focus:outline-none focus:border-[#000615]">
             <option>All Cities</option>
-            <option>London</option>
-            <option>Basel</option>
-            <option>Tokyo</option>
+            <option>Gurugram</option>
+            <option>Delhi</option>
+            <option>Noida</option>
           </select>
           <select className="bg-white border border-gray-200 px-4 py-2 text-[13px] text-gray-700 focus:outline-none focus:border-[#000615]">
             <option>All Types</option>

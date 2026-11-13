@@ -1,14 +1,14 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
-import { Link } from '../../lib/router';
-import { SectionHeader } from '../shared/SectionHeader';
-import { Loader2 } from 'lucide-react';
-import fetchApiResponse from '../../helper/api_data_store';
+import React, { useState, useEffect } from "react";
+import { Link } from "../../lib/router";
+import { SectionHeader } from "../shared/SectionHeader";
+import { Loader2 } from "lucide-react";
+import fetchApiResponse from "../../helper/api_data_store";
 
 interface NewsItem {
   id: string;
-  slug:string,
+  slug: string;
   title: string;
   excerpt: string;
   read_time: number;
@@ -25,13 +25,13 @@ export function SpecialReportsSection() {
     async function fetchReports() {
       try {
         const res = await fetchApiResponse<{ news: NewsItem[] }>(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/news?news_type=special`
+          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/news?news_type=special`,
         );
         if (res.meta?.status === 200 && res.data?.news) {
           setReports(res.data.news.slice(0, 3));
         }
       } catch (err) {
-        console.error('Failed to load special reports:', err);
+        console.error("Failed to load special reports:", err);
       } finally {
         setIsLoading(false);
       }
@@ -39,12 +39,21 @@ export function SpecialReportsSection() {
     fetchReports();
   }, []);
 
-  if (isLoading) return <div className="py-12 flex justify-center"><Loader2 className="animate-spin text-white" /></div>;
+  if (isLoading)
+    return (
+      <div className="py-12 flex justify-center">
+        <Loader2 className="animate-spin text-white" />
+      </div>
+    );
   if (reports.length === 0) return null;
 
   const formatDate = (dateStr: string | null) => {
-    if (!dateStr) return 'Recent';
-    return new Date(dateStr).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+    if (!dateStr) return "Recent";
+    return new Date(dateStr).toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    });
   };
 
   return (
@@ -71,7 +80,7 @@ export function SpecialReportsSection() {
               </div>
 
               <div className="text-xs uppercase tracking-wider text-blue-300 mb-1 font-medium font-sans">
-                {rep.category?.[0] || 'Research'}
+                {rep.category?.[0] || "Research"}
               </div>
 
               <h3 className="text-xl font-serif text-white group-hover:text-blue-300 transition-colors leading-snug mb-2">
@@ -83,14 +92,16 @@ export function SpecialReportsSection() {
               </p>
 
               <div className="mt-auto text-xs text-slate-400 font-sans">
-                Published {formatDate(rep.published_at)} · {rep.read_time} min read
+                Published {formatDate(rep.published_at)} · {rep.read_time} min
+                read
               </div>
             </div>
           ))}
         </div>
 
         <div className="pt-6 border-t border-navy-light text-center text-xs text-slate-400">
-          Independent analysis from the Form &amp; Field research desk. Designed for architects, interior designers and the curious.
+          Independent analysis from the Form &amp; Field research desk. Designed
+          for architects, interior designers and the curious.
         </div>
       </div>
     </section>

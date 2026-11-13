@@ -10,18 +10,19 @@ export function EventHero({ event }: { event: EventItem }) {
 
   return (
     <section className="w-full px-6 pt-8 pb-12">
-      <div className="relative w-full overflow-hidden bg-[#000615] text-white min-h-[500px] flex flex-col justify-between p-8 md:p-12 shadow-xl">
+      <div className="relative w-full overflow-hidden bg-[#000615] text-white min-h-125 flex flex-col justify-between p-8 md:p-12 shadow-xl">
         
         {/* Background Image with Overlay */}
-        {event.featured_image_url && (
+        {/* {event.featured_image_url && ( */}
           <>
             <div 
               className="absolute inset-0 z-0 opacity-40 mix-blend-luminosity bg-cover bg-center" 
-              style={{ backgroundImage: `url(${event.featured_image_url})` }} 
+              // style={{ backgroundImage: `url(${event.featured_image_url})` }} 
+              style ={{backgroundImage:`url(  https://lh3.googleusercontent.com/aida-public/AB6AXuAuG8eE3iooExHvunb0Pq82vneYH9YWJqiOTz32PND1UZ7v-FS8fVqWH_YdTldEKK9us3_IlLdmjKdN5OKQDZS1ObY5LYNQqbuvNRKUCVKRZIQ3m4TXy1IttRogc_oTpQs2MyaUaLUoujqAizSZbuk_Xs81vYsgfGlZ13i_3zlqGO1qXdXDoXRv3kbN8TQkQeYopFKz4GD9A3sd44b3eU3_itGwcLImKxdiRlA3NG0tFiDm8WVxKwT3')`}}
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#000615] via-[#000615]/50 to-transparent z-0" />
+            <div className="absolute inset-0 bg-linear-to-t from-[#00061509] via-[#000615]/50 to-transparent z-0" />
           </>
-        )}
+        {/* )} */}
 
         {/* Top Bar */}
         <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
@@ -50,9 +51,9 @@ export function EventHero({ event }: { event: EventItem }) {
             <button className="bg-[#000615] text-white border border-blue-200 px-6 py-2.5 text-[11px] font-bold uppercase tracking-wider hover:bg-blue-200 hover:text-[#000615] transition-all">
               Register for {event.title.split(':')[0]}
             </button>
-            <button className="bg-transparent text-white border border-white px-6 py-2.5 text-[11px] font-bold uppercase tracking-wider hover:bg-white hover:text-[#000615] transition-all">
+            {/* <button className="bg-transparent text-white border border-white px-6 py-2.5 text-[11px] font-bold uppercase tracking-wider hover:bg-white hover:text-[#000615] transition-all">
               Download Press Kit
-            </button>
+            </button> */}
           </div>
         </div>
       </div>

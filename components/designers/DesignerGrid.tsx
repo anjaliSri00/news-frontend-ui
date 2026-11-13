@@ -6,8 +6,7 @@ export function DesignerGrid({ designers }: { designers: Designer[] }) {
   if (designers.length === 0) return null;
 
   return (
-    <section className="max-w-7xl mx-auto px-6 py-20">
-      
+    <section className="max-w-7xl w-full mx-auto px-6 py-20"> 
       <div className="flex justify-between items-center mb-10">
         <div>
           <span className="text-xs font-semibold text-gray-500 uppercase tracking-widest">Directory</span>
@@ -29,6 +28,7 @@ export function DesignerGrid({ designers }: { designers: Designer[] }) {
               {/* Image */}
               <div className="h-80 relative overflow-hidden bg-gray-100">
                 {image ? (
+                  // eslint-disable-next-line @next/next/no-img-element
                   <img 
                     src={image} 
                     alt={designer.name} 
@@ -43,7 +43,7 @@ export function DesignerGrid({ designers }: { designers: Designer[] }) {
               </div>
 
               {/* Content */}
-              <div className="p-6 flex flex-col flex-grow">
+              <div className="p-6 flex flex-col grow">
                 <span className="text-xs font-semibold text-gray-500 uppercase mb-1">{designer.specialization}</span>
                 <h3 className="font-serif text-2xl text-primary mb-2">{designer.name}</h3>
                 

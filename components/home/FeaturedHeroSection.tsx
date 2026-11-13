@@ -49,7 +49,7 @@ export function FeaturedHeroSection() {
                     {heroArticle.title}
                   </div>
                 )}
-                <button
+                {/* <button
                   onClick={(e) => {
                     e.preventDefault();
                     toggleBookmark(heroArticle.id, heroArticle.title);
@@ -58,7 +58,7 @@ export function FeaturedHeroSection() {
                   className="absolute top-3 right-3 p-2 bg-white/95 backdrop-blur-sm text-navy shadow-sm transition-colors rounded-xs"
                 >
                   <Bookmark className={`w-4 h-4 ${isHeroBookmarked ? 'fill-navy text-navy' : 'text-slate-600'}`} />
-                </button>
+                </button> */}
               </div>
               <div className="text-xs uppercase tracking-wider text-[#142B4A] font-inter mb-2 font-bold">
                 {heroArticle.kicker}
@@ -89,14 +89,13 @@ export function FeaturedHeroSection() {
               </div>
             </div>
           )}
-          {/* Column 2: Secondary Features (span 3) */}
           <div className="lg:col-span-3 flex flex-col divide-y divide-slate-200">
             {/* Top secondary */}
             {clayArticle && (
               <div className="pb-6 group">
                 <div className="relative aspect-10/5 overflow-hidden bg-slate-100 mb-3 border border-slate-100">
                   {!imgErr2 ? (
-                    // eslint-disable-next-line @next/next/no-img-element
+                   // eslint-disable-next-line @next/next/no-img-element
                     <img
                       src={clayArticle.imageUrl}
                       alt={clayArticle.title}
@@ -122,12 +121,12 @@ export function FeaturedHeroSection() {
                 </div>
               </div>
             )}
-            {/* Bottom secondary */}
+
             {amaraArticle && (
               <div className="pt-6 group">
                 <div className="relative aspect-10/5 overflow-hidden bg-slate-100 mb-3 border border-slate-100">
                   {!imgErr3 ? (
-                    // eslint-disable-next-line @next/next/no-img-element
+                 // eslint-disable-next-line @next/next/no-img-element
                     <img
                       src={amaraArticle.imageUrl}
                       alt={amaraArticle.title}
@@ -154,7 +153,7 @@ export function FeaturedHeroSection() {
               </div>
             )}
           </div>
-          {/* Column 3: On our radar & Editor's note (span 3) */}
+
           <div className="lg:col-span-3 flex flex-col justify-start">
             <div>
               <div className="text-2xl text-[#142B4A] font-normal pb-2 font-lora">
@@ -202,8 +201,7 @@ export function FeaturedHeroSection() {
                   </div>
                 )}
               </div>
-            </div>
-            {/* Note from the editor box matching screenshot */}
+            </div>       
             <div className="mt-6 pt-5 pb-4 px-4 bg-pale-blue">
               <span className="text-[11px] font-inter font-bold uppercase tracking-widest text-[#142B4A] block mb-1.5">
                 A note from the editor
