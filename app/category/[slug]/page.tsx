@@ -8,7 +8,7 @@ import EventsPage from '@/components/pages/EventsPage';
 import type { CategorySlug } from '@/lib/models';
 import { Link } from '@/lib/router';
 import fetchApiResponse from '@/helper/api_data_store';
-import ShowroomsPage from '../showroom-showcase/page';
+import ShowroomsPage from '../../showroom-showcase/page';
 
 // 👇 Designer interface define karo
 interface DesignerItem {
@@ -153,6 +153,7 @@ async function CategoryContent({ params }: { params: Promise<{ slug: string }> }
       <ShowroomsPage/>
     )
   }
+
 
   // 3. Default Category Page
   const category = getCategoryBySlug(slug as CategorySlug);

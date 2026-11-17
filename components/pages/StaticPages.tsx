@@ -443,7 +443,7 @@ export function NotFoundPage() {
         <Link href="/" className="px-5 py-2.5 bg-navy text-white text-xs uppercase tracking-wider font-medium">
           Return to Front Page
         </Link>
-        <Link href="/category/projects" className="px-5 py-2.5 border border-slate-300 text-slate-700 hover:border-navy text-xs uppercase tracking-wider font-medium">
+        <Link href="/projects" className="px-5 py-2.5 border border-slate-300 text-slate-700 hover:border-navy text-xs uppercase tracking-wider font-medium">
           Browse Projects
         </Link>
       </div>

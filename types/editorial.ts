@@ -207,3 +207,34 @@ export interface InterviewDesigner {
   interview_by?: string;
   published_at?: string | null;
 }
+
+
+export interface HomepageLayout {
+  badge: string;
+  subtitle: string;
+  hero_left_type: string;
+  hero_left_id: string;
+  middle_top_type: string;
+  middle_top_id: string;
+  middle_bottom_type: string;
+  middle_bottom_id: string;
+  radar_1_type: string;
+  radar_1_id: string;
+  radar_2_type: string;
+  radar_2_id: string;
+  radar_3_type: string;
+  radar_3_id: string;
+  editor_note_type: string;
+  editor_note_id: string;
+}
+
+export interface OverviewArticle {
+  id: string;
+  title: string;
+  excerpt: string;
+  slug: string;
+  category: string[];
+  featured_image_url: string | null;
+  read_time?: number;
+  published_at?: string | null;
+}

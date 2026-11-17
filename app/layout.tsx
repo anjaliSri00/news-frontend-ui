@@ -15,6 +15,7 @@ import { ToastContainer } from '@/components/shared/Modal';
 import { LightboxModal } from '@/components/shared/LightboxModal';
 import { VideoPlayerModal, RegisterEventModal } from '@/components/shared/MediaModals';
 import { BackToTop } from '@/components/shared/SkeletonsAndUtils';
+import { Suspense } from 'react';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap' });
 const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-playfair', display: 'swap' });
@@ -70,12 +71,14 @@ export default async function RootLayout({
         className="min-h-screen overflow-x-hidden w-full max-w-full flex flex-col bg-white text-slate-700 antialiased selection:bg-blue-100 selection:text-blue-900"
         suppressHydrationWarning
       >
-        <AuthProvider>          {/* ← NEW: wraps everything */}
+        <AuthProvider>  
           <AppStateProvider>
             <TopUtilityBar dateLabel={dateLabel} />
+            <Suspense fallback={<div>Loading....</div>}>
             <Header />
-            <Nav />
-            <Ticker />
+             <Nav />
+            </Suspense>
+           <Ticker />
             <main className="grow w-full min-w-0">{children}</main>
             <Footer year={year} />
 

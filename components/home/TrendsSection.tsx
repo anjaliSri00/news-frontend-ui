@@ -32,8 +32,8 @@ export function TrendsSection() {
 
   // Static threads (ya future me API se aayen)
   const threads = [
-    { label: 'Adaptive reuse', href: '/category/projects' },
-    { label: 'Quiet technology', href: '/category/design-tech' },
+    { label: 'Adaptive reuse', href: '/projects' },
+    { label: 'Quiet technology', href: '/design-tech' },
     { label: 'Circular materials', href: '/reports' },
     { label: 'New domestic rituals', href: '/category/home-decor' },
   ];
@@ -61,7 +61,7 @@ export function TrendsSection() {
         <SectionHeader
           kicker="Beyond the moodboard"
           title="Trends"
-          viewAllHref="/category/trends"
+          viewAllHref="/trends"
           viewAllText="View all Trends"
         />
 
@@ -73,6 +73,7 @@ export function TrendsSection() {
               {/* 1. Image Container (Fixed Aspect Ratio) */}
               <div className="aspect-[2/1] w-full overflow-hidden bg-slate-100 mb-5">
                 {trend.featured_image_url ? (
+                  // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={trend.featured_image_url}
                     alt={trend.title}
@@ -92,8 +93,8 @@ export function TrendsSection() {
               </div>
 
               {/* 3. Title */}
-              <h3 className="text-[26px] font-serif text-[#1a1a1a] group-hover:text-[#3B6BB0] transition-colors leading-tight mb-3">
-                <Link href={`/article/${trend.slug}`}>{trend.title}</Link>
+              <h3 className="text-[26px] font-serif text-[#1a1a1a] transition-colors leading-tight mb-3">
+                <Link href={`/trends/${trend.slug}`}>{trend.title}</Link>
               </h3>
 
               {/* 4. Excerpt */}

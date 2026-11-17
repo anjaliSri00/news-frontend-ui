@@ -52,7 +52,7 @@ export function ProjectsSection() {
         <SectionHeader
           kicker="Built ideas, around the world"
           title="Projects"
-          viewAllHref="/category/projects"
+          viewAllHref="/projects"
           viewAllText="View all Projects"
         />
 
@@ -63,6 +63,7 @@ export function ProjectsSection() {
             <div className="lg:col-span-6 flex flex-col group">
               <div className="relative aspect-[20/10] overflow-hidden bg-slate-100 mb-4 border border-slate-100">
                 {featuredProject.featured_image_url ? (
+                  // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={featuredProject.featured_image_url}
                     alt={featuredProject.title}
@@ -79,7 +80,7 @@ export function ProjectsSection() {
               </div>
 
               <h3 className="text-3xl font-serif text-navy transition-colors leading-snug mb-2">
-                <Link href={`/article/${featuredProject.slug}`}>{featuredProject.title}</Link>
+                <Link href={`/projects/${featuredProject.slug}`}>{featuredProject.title}</Link>
               </h3>
 
               <p className="text-slate-600 text-sm leading-relaxed mb-4 line-clamp-3">
@@ -91,7 +92,7 @@ export function ProjectsSection() {
                   By {featuredProject.architect || 'Architect'} · {featuredProject.year || '2024'}
                 </span>
                 <Link
-                  href={`/article/${featuredProject.slug}`}
+                  href={`/projects/${featuredProject.slug}`}
                   className="font-medium text-navy hover:text-accent-blue inline-flex items-center gap-1">
                   <span>Explore project</span>
                   <ArrowRight className="w-3.5 h-3.5" />
@@ -122,7 +123,7 @@ export function ProjectsSection() {
                     {proj.category?.[0] || 'Project'} / {proj.city || 'Location'}
                   </div>
                   <h4 className="text-2xl font-serif text-navy transition-colors leading-snug line-clamp-2 mb-1">
-                    <Link href={`/article/${proj.slug}`}>{proj.title}</Link>
+                    <Link href={`/projects/${proj.slug}`}>{proj.title}</Link>
                   </h4>
                   <div className="text-xs text-slate-400 mt-2">
                     {proj.year || '2024'} · {proj.architect || 'Architect'}

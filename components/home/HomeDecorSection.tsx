@@ -170,7 +170,7 @@ export function HomeDecorSection() {
                 </div>
 
                 <h3 className="text-[27px] font-serif text-navy leading-snug mb-2">
-                  <Link href={`/article/${featured.slug}`}>
+                  <Link href={`/home-decor/${featured.slug}`}>
                     {featured.title}
                   </Link>
                 </h3>
@@ -200,7 +200,7 @@ export function HomeDecorSection() {
                 </div>
 
                 <h4 className="text-[22px] font-lora text-navy leading-snug mb-2">
-                  <Link href={`/article/${article.slug}`}>{article.title}</Link>
+                  <Link href={`/home-decor/${article.slug}`}>{article.title}</Link>
                 </h4>
 
                 <p className="text-xs text-slate-600 leading-relaxed mb-3 line-clamp-3">
@@ -223,7 +223,7 @@ export function HomeDecorSection() {
                   </div>
 
                   <h4 className="text-xl font-lora text-navy leading-snug mb-2">
-                    <Link href={`/article/${article.slug}`}>
+                    <Link href={`/home-decor/${article.slug}`}>
                       {article.title}
                     </Link>
                   </h4>
