@@ -47,9 +47,6 @@ export default function Home() {
       {/* 9. Furniture */}
       <FurnitureSection />
 
-      {/* 10. Decor */}
-      {/* <DecorSection /> */}
-
       {/* 11. Showroom Showcase */}
       <ShowroomSection />
 
@@ -66,7 +63,7 @@ export default function Home() {
       <SpecialReportsSection />
 
       {/* 16. Podcast & Video */}
-      <PodcastVideoSection />
+      {/* <PodcastVideoSection /> */}
 
       {/* 17. The Daily Brief Newsletter */}
       <NewsletterBand />

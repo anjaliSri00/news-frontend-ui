@@ -78,7 +78,7 @@ export function EditorialDeskSection() {
         <SectionHeader
           kicker="Ideas with a point of view"
           title="Editorial Desk"
-          viewAllHref="/category/editorials"
+          // viewAllHref="/article/editorials"
           viewAllText="View all editorials"
         />
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
@@ -90,7 +90,7 @@ export function EditorialDeskSection() {
                   {featuredEditorial.column_name || "The Editor’s Column"}
                 </div>
                 <h3 className="text-2xl font-serif text-navy transition-colors leading-snug mb-3">
-                  <Link href={`/article/${featuredEditorial.slug}`}>
+                  <Link href={`/article/${featuredEditorial.slug}?type=editorial`}>
                     {featuredEditorial.title}
                   </Link>
                 </h3>

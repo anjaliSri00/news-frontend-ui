@@ -112,7 +112,7 @@ export function ProductsPage() {
                     {prod.price && <span className="font-mono text-navy font-semibold">{prod.price}</span>}
                   </div>
 
-                  <h3 className="font-serif text-base text-navy group-hover:text-accent-blue transition-colors leading-snug mb-1">
+                  <h3 className="font-serif text-base text-navy transition-colors leading-snug mb-1">
                     {prod.title}
                   </h3>
 

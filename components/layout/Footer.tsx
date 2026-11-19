@@ -39,10 +39,10 @@ export function Footer({year}:FooterProps) {
                 Explore
               </h4>
               <ul className="space-y-2">
-                <li><Link href="/category/home-decor" className="hover:text-navy transition-colors">Home Decor</Link></li>
+                <li><Link href="/home-decor" className="hover:text-navy transition-colors">Home Decor</Link></li>
                 <li><Link href="/events" className="hover:text-navy transition-colors">Events</Link></li>
-                <li><Link href="/category/trends" className="hover:text-navy transition-colors">Trends</Link></li>
-                <li><Link href="/designers" className="hover:text-navy transition-colors">Designers</Link></li>
+                <li><Link href="/trends" className="hover:text-navy transition-colors">Trends</Link></li>
+                <li><Link href="/category/designers" className="hover:text-navy transition-colors">Designers</Link></li>
                 <li><Link href="/category/design-tech" className="hover:text-navy transition-colors">Design Tech</Link></li>
               </ul>
             </div>
@@ -54,22 +54,21 @@ export function Footer({year}:FooterProps) {
               </h4>
               <ul className="space-y-2">
                 <li><Link href="/category/furniture" className="hover:text-navy transition-colors">Furniture</Link></li>
-                <li><Link href="/category/decor" className="hover:text-navy transition-colors">Decor</Link></li>
-                <li><Link href="/showrooms" className="hover:text-navy transition-colors">Showroom Showcase</Link></li>
+                <li><Link href="/showroom-showcase" className="hover:text-navy transition-colors">Showroom Showcase</Link></li>
                 <li><Link href="/projects" className="hover:text-navy transition-colors">Projects</Link></li>
-                <li><Link href="/products" className="hover:text-navy transition-colors">Products</Link></li>
+                <li><Link href="/category/products" className="hover:text-navy transition-colors">Products</Link></li>
               </ul>
             </div>
 
             {/* The publication */}
-            <div>
+            <div className='hidden'>
               <h4 className="text-xs uppercase tracking-widest text-navy font-semibold mb-3">
                 The publication
               </h4>
               <ul className="space-y-2">
-                <li><Link href="/about" className="hover:text-navy transition-colors">About us</Link></li>
-                <li><Link href="/about#team" className="hover:text-navy transition-colors">Our editorial team</Link></li>
-                <li><Link href="/reports" className="hover:text-navy transition-colors">Special Reports</Link></li>
+                {/* <li><Link href="/about" className="hover:text-navy transition-colors">About us</Link></li> */}
+                {/* <li><Link href="/about#team" className="hover:text-navy transition-colors">Our editorial team</Link></li> */}
+                <li><Link href="/category/reports" className="hover:text-navy transition-colors">Special Reports</Link></li>
                 <li><Link href="/media" className="hover:text-navy transition-colors">Podcast &amp; Video</Link></li>
                 <li><Link href="/contact" className="hover:text-navy transition-colors">Contact &amp; submissions</Link></li>
                 <li><Link href="/contact#partner" className="hover:text-navy transition-colors">Partner with us</Link></li>
@@ -85,7 +84,6 @@ export function Footer({year}:FooterProps) {
                 <li><a href="https://instagram.com" target="_blank" rel="noreferrer" className="hover:text-navy transition-colors">Instagram ↗</a></li>
                 <li><a href="https://linkedin.com" target="_blank" rel="noreferrer" className="hover:text-navy transition-colors">LinkedIn ↗</a></li>
                 <li><a href="https://pinterest.com" target="_blank" rel="noreferrer" className="hover:text-navy transition-colors">Pinterest ↗</a></li>
-                <li><a href="https://youtube.com" target="_blank" rel="noreferrer" className="hover:text-navy transition-colors">YouTube ↗</a></li>
                 <li><Link href="/reports" className="hover:text-navy transition-colors">RSS feed ↗</Link></li>
               </ul>
             </div>

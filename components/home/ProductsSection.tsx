@@ -77,7 +77,7 @@ export function ProductsSection() {
               </div>
 
               {/* Title */}
-              <h3 className="text-base font-serif text-navy group-hover:text-accent-blue transition-colors leading-snug mb-1.5 line-clamp-2">
+              <h3 className="text-base font-serif text-navy transition-colors leading-snug mb-1.5 line-clamp-2">
                 <Link href={`/product/${prod.slug}`}>{prod.title}</Link>
               </h3>
 

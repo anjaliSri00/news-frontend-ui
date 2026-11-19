@@ -13,7 +13,6 @@ import { Footer } from '@/components/layout/Footer';
 import { SearchOverlay } from '@/components/shared/SearchOverlay';
 import { ToastContainer } from '@/components/shared/Modal';
 import { LightboxModal } from '@/components/shared/LightboxModal';
-import { VideoPlayerModal, RegisterEventModal } from '@/components/shared/MediaModals';
 import { BackToTop } from '@/components/shared/SkeletonsAndUtils';
 import { Suspense } from 'react';
 
@@ -84,8 +83,8 @@ export default async function RootLayout({
 
             <SearchOverlay />
             <LightboxModal />
-            <VideoPlayerModal />
-            <RegisterEventModal />
+            {/* <VideoPlayerModal />
+            <RegisterEventModal /> */}
             <ToastContainer />
             <BackToTop />
           </AppStateProvider>

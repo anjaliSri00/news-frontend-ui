@@ -73,13 +73,13 @@ export function Header() {
                 onSignOut={handleSignOut}
               />
             )}
-            <Link
+            {/* <Link
               href="/subscribe"
               className="hidden md:inline-flex rounded-sm items-center gap-1.5 px-4 py-2 bg-navy hover:bg-slate-900 text-white text-xs uppercase tracking-[0.12em] font-medium transition-colors"
             >
               <span>The Daily Brief</span>
               <ArrowUpRight className="w-3.5 h-3.5" />
-            </Link>
+            </Link> */}
 
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -216,7 +216,7 @@ function AccountMenu({
             <p className="text-sm text-slate-800 truncate">{email}</p>
           </div>
 
-          <Link
+          {/* <Link
             href="/dashboard"
             role="menuitem"
             onClick={() => setOpen(false)}
@@ -224,7 +224,7 @@ function AccountMenu({
           >
             <LayoutDashboard className="w-4 h-4" />
             Dashboard
-          </Link>
+          </Link> */}
 
           <Link
             href="/account"

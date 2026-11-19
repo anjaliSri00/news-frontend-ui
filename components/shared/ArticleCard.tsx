@@ -40,8 +40,9 @@ export function ArticleCard({
   if (variant === 'large') {
     return (
       <article className={`group flex flex-col h-full ${className}`}>
-        <div className="relative aspect-[16/10] overflow-hidden bg-slate-100 mb-4 border border-slate-100">
+        <div className="relative aspect-[6/3] overflow-hidden bg-slate-100 mb-4 border border-slate-100">
           {!imageError ? (
+            // eslint-disable-next-line @next/next/no-img-element
             <img
               src={article.imageUrl}
               alt={article.imageAlt || article.title}
@@ -67,7 +68,7 @@ export function ArticleCard({
             {article.kicker || `${article.categoryName}${article.location ? ` / ${article.location.split(',')[0]}` : ''}`}
           </div>
 
-          <h3 className="text-2xl lg:text-3xl font-serif text-navy group-hover:text-accent-blue transition-colors leading-tight mb-2.5">
+          <h3 className="text-2xl lg:text-3xl font-serif text-navy transition-colors leading-tight mb-2.5">
             <Link href={`/article/${article.id}`}>
               {article.title}
             </Link>

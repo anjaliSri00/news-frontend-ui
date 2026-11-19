@@ -70,7 +70,7 @@ async function CategoryContent({ params }: { params: Promise<{ slug: string }> }
 
   // 2. Designers Page
   if (slug === 'designers') {
-    let designers: DesignerItem[] = []; // 👈 Type assign kiya
+    let designers: DesignerItem[] = [];
     
     try {
       const res = await fetchApiResponse<{ designers: DesignerItem[] }>(
@@ -115,7 +115,7 @@ async function CategoryContent({ params }: { params: Promise<{ slug: string }> }
                   href={`/designers/${designer.slug}`} 
                   className="group flex flex-col"
                 >
-                  <div className="aspect-4/3 w-full overflow-hidden bg-slate-100 mb-4 relative">
+                  <div className="aspect-3/5 w-full overflow-hidden bg-slate-100 mb-4 relative">
                     {imageUrl ? (
                     // eslint-disable-next-line @next/next/no-img-element
                       <img
@@ -132,7 +132,7 @@ async function CategoryContent({ params }: { params: Promise<{ slug: string }> }
                     {designer.specialization || 'Designer'} • {designer.city}
                   </div>
                   
-                  <h3 className="text-[20px] font-serif text-navy leading-snug mb-2 group-hover:text-[#3B6BB0] transition-colors">
+                  <h3 className="text-[20px] font-serif text-navy leading-snug mb-2 transition-colors">
                     {designer.name}
                   </h3>
                   

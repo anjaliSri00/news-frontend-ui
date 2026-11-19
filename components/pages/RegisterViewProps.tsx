@@ -62,9 +62,7 @@ const MOBILE_REGEX = /^\+?\d{8,15}$/;
 const PASSWORD_LETTER = /[A-Za-z]/;
 const PASSWORD_DIGIT = /\d/;
 
-const MONOGRAPH_IMAGE_URL =
-  'https://lh3.googleusercontent.com/aida-public/AB6AXuABnWV8E421W1CPfuCOTb_OMke6DguolMoBuZ5ajdvNtfFLbq2KqwX3xlNFh6zn0gOot8RK8dqT0GlA8yuXmlIOu731gJE2J1gnlQODDf4MbhEsOTmfUMNWWWRtD1LiAiHBnfxkCjHKAI3OhmR6jebLj_F945-2mxuELEf5dJQdp3pO5fQD60UtVzqRoTxcUb3DtmQ6zh6HRDtKsS5MN-mHNW4yROr2VBVcQPPNxjLrRGYjMhAxkHOg2DHg95Q-4mn7RA';
-
+const MONOGRAPH_IMAGE_URL ='https://images.unsplash.com/photo-1720247520862-7e4b14176fa8?q=80&w=1528&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D'
 function splitName(full: string): { firstName: string; lastName: string } {
   const parts = full.trim().split(/\s+/);
   return {
@@ -129,7 +127,7 @@ export function RegisterView({onNavigate, onSelectMonograph, onRegisterSuccess, 
         name: name.trim(),
         email: email.trim().toLowerCase(),
         mobile: mobile.trim() || '',
-        password: hashPasswordForTransport(password), // ---hashed password 
+        password: hashPasswordForTransport(password), 
       });
 
       if (result?.error) {
@@ -166,17 +164,17 @@ export function RegisterView({onNavigate, onSelectMonograph, onRegisterSuccess, 
                 </span>
                 Return to Publication
               </button>
-              <span className="inline-block px-3 py-1 bg-[#f6f3f2] text-[#000615] text-[11px] font-label-md tracking-[0.14em] uppercase self-start sm:self-auto">
+              {/* <span className="inline-block px-3 py-1 bg-[#f6f3f2] text-[#000615] text-[11px] font-label-md tracking-[0.14em] uppercase self-start sm:self-auto">
                 Membership &amp; Patronage · Autumn Issue
-              </span>
+              </span> */}
             </div>
 
             <div className="space-y-4 mb-8">
               <h1 className="font-headline-xl text-3xl sm:text-5xl lg:text-[56px] text-[#0b1f3a] tracking-tight font-serif">
-                Begin Your Spatial Inquiry
+                Create Account
               </h1>
               <p className="font-body-lg text-lg sm:text-[18px] text-[#5e5e5c] max-w-xl font-light leading-relaxed">
-                Join our international community of architects, interior
+                Join our community of architects, interior
                 theorists, and spatial practitioners.
               </p>
             </div>
@@ -227,7 +225,7 @@ export function RegisterView({onNavigate, onSelectMonograph, onRegisterSuccess, 
                   htmlFor={emailId}
                   className="font-label-md text-[12px] text-[#5e5e5c] uppercase tracking-wider"
                 >
-                  Professional / Institutional Email
+                  Professional Email
                 </label>
                 <div className="relative">
                   <input
@@ -390,7 +388,7 @@ export function RegisterView({onNavigate, onSelectMonograph, onRegisterSuccess, 
                   <span>
                     {isSubmitting
                       ? 'Establishing Inquiry Record...'
-                      : 'Create Form & Field Account'}
+                      : 'Create Your Account'}
                   </span>
                   <span className="material-symbols-outlined text-[16px]">
                     <ArrowRight size={16} />
@@ -400,16 +398,14 @@ export function RegisterView({onNavigate, onSelectMonograph, onRegisterSuccess, 
 
               <div className="pt-4 text-center sm:text-left">
                 <p className="font-body-md text-[15px] text-[#5e5e5c]">
-                  Already a subscriber or institutional partner?{' '}
+                  Already have an account?{' '}
                   <button
                     type="button"
                     onClick={() => onNavigate('signin')}
                     className="text-[#000615] font-medium hover:text-[#8C3F2E] underline underline-offset-4 ml-1 inline-flex items-center gap-1 transition-colors cursor-pointer"
                   >
                     Sign in here{' '}
-                    <span className="material-symbols-outlined text-[14px]">
-                      east
-                    </span>
+                 
                   </button>
                 </p>
               </div>
@@ -447,17 +443,14 @@ export function RegisterView({onNavigate, onSelectMonograph, onRegisterSuccess, 
                 <div className="absolute bottom-4 left-4 right-4 p-4 bg-[#ffffff]/95 backdrop-blur-sm border border-[#E2DFD8]/80 group-hover:bg-[#ffffff] transition-colors">
                   <div className="flex items-center justify-between mb-1">
                     <span className="font-label-md text-[10px] text-[#8C3F2E] uppercase tracking-[0.2em] block">
-                      Print &amp; Digital Monograph
+                      Published Work
                     </span>
                     <span className="font-label-md text-[10px] text-[#5e5e5c] uppercase flex items-center gap-1 group-hover:text-[#0b1f3a]">
                       Read inquiry{' '}
-                      <span className="material-symbols-outlined text-[12px]">
-                        east
-                      </span>
                     </span>
                   </div>
                   <h3 className="font-headline-sm text-lg sm:text-[20px] text-[#000615] tracking-tight font-serif">
-                    Issue № 48: Materiality in Extreme Latitudes
+                     Materiality in Extreme Latitudes
                   </h3>
                   <p className="font-body-sm text-[13px] text-[#5e5e5c] line-clamp-1 mt-1">
                     Field surveys from Svalbard, Atacama Desert, and the Kyoto
@@ -484,13 +477,13 @@ export function RegisterView({onNavigate, onSelectMonograph, onRegisterSuccess, 
                       Amara Okafor
                     </div>
                     <div className="font-body-sm text-[13px] text-[#5e5e5c]">
-                      Principal Architect, Studio Okafor (London &amp; Lagos)
+                      Principal Architect, Studio Okafo 
                     </div>
                   </div>
                 </div>
               </div>
 
-              <div className="grid grid-cols-3 gap-2 pt-8 mt-6 border-t border-[#E2DFD8]">
+              <div className="grid hidden grid-cols-3 gap-2 pt-8 mt-6 border-t border-[#E2DFD8]">
                 <div className="space-y-0.5">
                   <div className="font-headline-sm text-xl sm:text-[20px] text-[#000615] tracking-tight font-serif">
                     1.42M+
