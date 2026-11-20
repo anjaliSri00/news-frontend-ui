@@ -39,8 +39,8 @@ export function Footer({year}:FooterProps) {
                 Explore
               </h4>
               <ul className="space-y-2">
-                <li><Link href="/home-decor" className="hover:text-navy transition-colors">Home Decor</Link></li>
-                <li><Link href="/events" className="hover:text-navy transition-colors">Events</Link></li>
+                <li><Link href="/category/home-decor" className="hover:text-navy transition-colors">Home Decor</Link></li>
+                <li><Link href="/category/events" className="hover:text-navy transition-colors">Events</Link></li>
                 <li><Link href="/trends" className="hover:text-navy transition-colors">Trends</Link></li>
                 <li><Link href="/category/designers" className="hover:text-navy transition-colors">Designers</Link></li>
                 <li><Link href="/category/design-tech" className="hover:text-navy transition-colors">Design Tech</Link></li>
@@ -57,6 +57,7 @@ export function Footer({year}:FooterProps) {
                 <li><Link href="/showroom-showcase" className="hover:text-navy transition-colors">Showroom Showcase</Link></li>
                 <li><Link href="/projects" className="hover:text-navy transition-colors">Projects</Link></li>
                 <li><Link href="/category/products" className="hover:text-navy transition-colors">Products</Link></li>
+                <li><Link href="/contact-us" className="hover:text-navy transition-colors">Contact &amp; submissions</Link></li>
               </ul>
             </div>
 
@@ -70,7 +71,7 @@ export function Footer({year}:FooterProps) {
                 {/* <li><Link href="/about#team" className="hover:text-navy transition-colors">Our editorial team</Link></li> */}
                 <li><Link href="/category/reports" className="hover:text-navy transition-colors">Special Reports</Link></li>
                 <li><Link href="/media" className="hover:text-navy transition-colors">Podcast &amp; Video</Link></li>
-                <li><Link href="/contact" className="hover:text-navy transition-colors">Contact &amp; submissions</Link></li>
+                <li><Link href="/contact-us" className="hover:text-navy transition-colors">Contact &amp; submissions</Link></li>
                 <li><Link href="/contact#partner" className="hover:text-navy transition-colors">Partner with us</Link></li>
               </ul>
             </div>
